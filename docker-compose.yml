@@ -1,0 +1,28 @@
+version: '3.3'
+services:
+
+#  nginx:
+#    build: ./nginx
+#    ports:
+#      - '80:80'
+#      - '443:443'
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    ports:
+      - "8080:8080"
+
+
+#    environment:
+#      DOCKER: 1 
+#      WAIT_HOSTS: mongo:27017
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+
+    environment:
+      - DANGEROUSLY_DISABLE_HOST_CHECK=true
+    ports:
+      - "3000:3000"
