@@ -3,7 +3,7 @@ pragma solidity ^0.8.21;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-contract WrtingToken is ERC20 {
+contract WriteToken is ERC20 {
     event RewardedPublisher(address indexed publisher, uint256 amount);
     event LikedPost(address indexed viewer, uint256 amount);
 

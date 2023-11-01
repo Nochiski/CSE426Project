@@ -3,7 +3,7 @@ pragma solidity ^0.8.21;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
-contract BlogNFT is ERC721URIStorage {
+contract BlogCraftNFT is ERC721URIStorage {
 
     uint256 private latestTokenId;
     mapping(uint256 => string) private tokenContentReference;
