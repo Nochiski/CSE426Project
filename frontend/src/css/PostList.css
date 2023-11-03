@@ -15,7 +15,6 @@
 }
 .post_list_top h1{
     color: #000;
-    padding-left: 10px;
 
     font-family: Noto Sans;
     font-size: 35px;
@@ -48,9 +47,8 @@
 .post_list_top img{
     width: 25px;
     height: 25px;
-}
+}   
 .post_list_scroll{
-    background-color: aqua;
     width: 70%;
     min-width: 1000px;
 }

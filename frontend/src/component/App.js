@@ -8,19 +8,18 @@ function App() {
   return (
     <Router>
       <div className="nav_bar">
-          <Link to="/" className="nav_bar_logo" >
-              <img src={nav_bar_logo}></img>
-          </Link>
-          <button className="nav_bar_login">
-            Login
-          </button>
-        </div>
-        <div>        
-        <Routes>
-          <Route path="/" element={<PostList></PostList>}></Route>
-        </Routes>
-        </div>
-
+        <Link to="/" className="nav_bar_logo" >
+            <img src={nav_bar_logo}></img>
+        </Link>
+        <button className="nav_bar_login">
+          Login
+        </button>
+      </div>
+      <div>        
+      <Routes>
+        <Route path="/" element={<PostList></PostList>}></Route>
+      </Routes>
+      </div>
     </Router>
   );
 }
