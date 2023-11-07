@@ -1,3 +1,71 @@
-.write_post{
-    background-color: antiquewhite;
+.write_post {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    margin: auto;
+    padding: 20px;
+}
+.input_container {
+    display: flex;
+    justify-content: space-between; /* Pushes items to the sides */
+    align-items: center; /* Vertically center items */
+}
+
+.title_input,
+.content_textarea,
+.post_button {
+    margin-bottom: 0px;
+    margin-left: 10px;
+    margin-right: 100px;
+    padding: 10px;
+    font-family: 'Noto Sans';
+    font-size: 20px;
+    font-color: #FFF;
+    border: 1px solid #ccc;
+    border-radius: 15px;
+}
+
+.title_input {
+    width: 100%;
+    font-family: "Noto Sans";
+    border: none;
+    font-size: 50px;
+    color: #ACABAB;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+}
+
+.content_textarea {
+    color: #ACABAB;
+    font-family: Noto Sans;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    border-top: 0.5px solid #000;
+    border-bottom: 0.5px solid #000;
+    border-left: none;
+    border-right: none;
+    background: #FFF;
+    border-radius: 0;
+    width: 1202px;
+    height: 600px;
+}
+
+.post_button {
+    background-color: #009406;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    padding: 8px;
+    border: none;
+    border-radius: 15px;
+    width: 128px;
+    height: 38px;
+
+}
+
+.post_button:hover {
+    background-color: #6B6B6B;
 }
