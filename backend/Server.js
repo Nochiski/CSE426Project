@@ -1,5 +1,10 @@
-const express = require('express');
-const cors = require('cors');
+const express = require('express'); 
+const cors = require('cors'); // for CORS config
+const connectDB = require('./db');  // For DB
+
+connectDB();
+app.use(express.json());
+
 const app = express();
 const port = process.env.PORT || 8080;
 
@@ -15,6 +20,7 @@ app.get('/', (req, res) => {
 
 app.get('/users', (req, res) => {
     res.send('I\'m going to implement user info later');
+
 });
 
 app.get('/users:id', (req, res) => {
