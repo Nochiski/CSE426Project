@@ -2,43 +2,36 @@
     display: flex;
     flex-direction: column;
     width: 70%;
-    margin: auto;
-    padding: 20px;
+    padding: 20px 20px 20px 20px; /* Adjust padding for top, right, bottom, left */
+    margin: 0 auto;
 }
-.input_container {
+
+.write_post_input_container {
     display: flex;
-    justify-content: space-between; /* Pushes items to the sides */
-    align-items: center; /* Vertically center items */
+    flex-direction: column; /* Stack items vertically */
+    align-items: flex-start; /* Align items at the start (left side) */
+    width: 70%;
+    min-width: 1000px;
+    padding: 0; /* Reset padding for container */
 }
 
-.title_input,
-.content_textarea,
-.post_button {
-    margin-bottom: 0px;
-    margin-left: 10px;
-    margin-right: 100px;
-    padding: 10px;
-    font-family: 'Noto Sans';
-    font-size: 20px;
-    font-color: #FFF;
-    border: 1px solid #ccc;
-    border-radius: 15px;
-}
-
-.title_input {
-    width: 100%;
+.write_post_title_input {
     font-family: "Noto Sans";
-    border: none;
     font-size: 50px;
     color: #ACABAB;
     font-style: normal;
     font-weight: 800;
     line-height: normal;
+    border: none;
+    border-radius: 15px;
+    width: calc(100% - 138px); /* Adjust the width to accommodate the button */
+    padding: 10px; /* Apply padding instead of margin */
+    margin: 0; /* Reset margin */
 }
 
-.content_textarea {
+.write_post_content_textarea {
     color: #ACABAB;
-    font-family: Noto Sans;
+    font-family: 'Noto Sans';
     font-size: 20px;
     font-style: normal;
     font-weight: 400;
@@ -49,11 +42,11 @@
     border-right: none;
     background: #FFF;
     border-radius: 0;
-    width: 1202px;
     height: 600px;
+    padding-right: 138px; /* Create space for the button */
 }
 
-.post_button {
+.write_post_post_button {
     background-color: #009406;
     color: #fff;
     cursor: pointer;
@@ -63,9 +56,5 @@
     border-radius: 15px;
     width: 128px;
     height: 38px;
-
-}
-
-.post_button:hover {
-    background-color: #6B6B6B;
+    align-self: flex-end; /* Align the button to the end of the container */
 }

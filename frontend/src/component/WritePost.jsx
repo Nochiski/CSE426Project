@@ -15,15 +15,15 @@ function WritePost() {
 
     return (
         <div className='write_post'>
-            <div className='input_container'>
+            <div className='write_post_input_container'>
                 <input
                     type='text'
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder='Title'
-                    className='title_input'
+                    className='write_post_title_input'
                 />
-                <button onClick={handlePost} className='post_button'>
+                <button onClick={handlePost} className='write_post_post_button'>
                     Post
                 </button>
             </div>
@@ -31,7 +31,7 @@ function WritePost() {
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 placeholder='Content text holder'
-                className='content_textarea'
+                className='write_post_content_textarea'
             />
         </div>
     );
