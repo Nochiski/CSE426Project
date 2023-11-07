@@ -8,10 +8,9 @@
 
 .write_post_input_container {
     display: flex;
-    flex-direction: column; /* Stack items vertically */
+    flex-direction: row; /* Stack items vertically */
     align-items: flex-start; /* Align items at the start (left side) */
-    width: 70%;
-    min-width: 1000px;
+    min-width: 1200px;
     padding: 0; /* Reset padding for container */
 }
 
@@ -56,5 +55,5 @@
     border-radius: 15px;
     width: 128px;
     height: 38px;
-    align-self: flex-end; /* Align the button to the end of the container */
+    align-self: center; /* Align the button to the end of the container */
 }
