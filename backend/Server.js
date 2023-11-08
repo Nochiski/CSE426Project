@@ -1,9 +1,8 @@
 const express = require('express'); 
 const cors = require('cors'); // for CORS config
-const connectDB = require('./db');  // For DB
+const { findUserByBIB39, connectDB } = require('./Database');
 
 connectDB();
-app.use(express.json());
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -18,14 +17,27 @@ app.get('/', (req, res) => {
   res.send('Hello word!');
 });
 
-app.get('/users', (req, res) => {
-    res.send('I\'m going to implement user info later');
-
+app.get('/users/:id', async (req, res) => {
+  const userID = req.params.id;
+  try {
+    const user = await findUserByBIB39(userID);
+    if (user) {
+      res.json(user);
+    } else {
+      res.status(404).send('User not found');
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 });
 
-app.get('/users:id', (req, res) => {
-    res.send('I\'m going to implement user info later');
-});
+app.post('/users', async (req, res)=> {
+  const userId = req.body.userId;
+  const userName = req.body.userName;
+
+  console.log(userId, userName);
+
+})
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

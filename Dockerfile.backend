@@ -2,13 +2,12 @@ FROM node:18-alpine
 
 WORKDIR /usr/src/app
 
-COPY /backend .
-COPY /frontend/package_for_docker.json ./package.json
+COPY ./backend/package*.json ./
 
 RUN npm install
 
-COPY . .
+COPY ./backend .
 
 EXPOSE 8080
 
-CMD [ "node", "server.js" ]
+CMD [ "node", "Server.js" ]
