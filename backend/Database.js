@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const User = require('./UserInfo');
+const Post = require('./Post')
 const dbURI = "mongodb://rootuser:rootpass@mongo:27017/Bwrite?authSource=admin";
 
 
@@ -20,6 +21,16 @@ const findUserByBIB39 = async (bip39) => {
   } catch (error) {
     console.error('Error occurred in findUserByBIB39 function:', error);
     return null;
+  }
+};
+
+const findAllPosts = async() => {
+  try{
+    const docs = await Post.find();
+    console.log(docs);
+    return docs;
+  }catch(err){
+    console.error("Fail to connect:", err.message);
   }
 }
 module.exports = {findUserByBIB39, connectDB};
