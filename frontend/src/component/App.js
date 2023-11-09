@@ -4,6 +4,9 @@ import '../css/App.css';
 import nav_bar_logo from '../images/nav_bar_logo.png'
 import PostList from './PostList.jsx'
 import WritePost from './WritePost.jsx'
+import CoinImg from '../images/Coin.png'
+import ProfileImg from "../images/Profile.png"
+import Notification from "../images/bell.png"
 import Web3 from 'web3';
 import { getUserById, postUser } from '../API/User.js';
 
@@ -55,7 +58,6 @@ function App() {
           }else {
             setIsLogin(true)
             console.log('User found, logged in');
-
           }
         } catch (error) {
           console.log(error)
@@ -74,9 +76,25 @@ function App() {
         <Link to="/" className="nav_bar_logo" >
             <img src={nav_bar_logo}></img>
         </Link>
+
+        <form>
+          <input className="nav_bar_search" type="text" placeholder="Search"></input>
+        </form>
+
+        {isLogin ?
+        <div className="nav_bar_user_info">
+          <img src={CoinImg}/>
+          <p className="nav_bar_user_info_amount">1000</p>
+          <button className="nav_bar_user_info_notification">
+            <img src={Notification}></img>
+          </button>
+          <img className="nav_bar_user_info_profile" src={ProfileImg}></img>
+        </div>
+        :
         <button className="nav_bar_login" onClick={()=>toLogin()}>
-          Login
+        Login
         </button>
+        }
       </div>
       <div>
         {signUp &&
