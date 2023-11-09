@@ -4,6 +4,7 @@ import '../css/App.css';
 import nav_bar_logo from '../images/nav_bar_logo.png'
 import PostList from './PostList.jsx'
 import WritePost from './WritePost.jsx'
+import PostPage from './PostPage.jsx'
 import CoinImg from '../images/Coin.png'
 import ProfileImg from "../images/Profile.png"
 import Notification from "../images/bell.png"
@@ -128,6 +129,7 @@ function App() {
         <Routes>
           <Route path="/" element={<PostList handleLogin={handleLogin} isLogin={isLogin}></PostList>}></Route>
           <Route path="/write" element={<WritePost></WritePost>}></Route>
+          <Route path="/post" element={<PostPage></PostPage>}></Route>
         </Routes>
       </div>
     </Router>

@@ -1,0 +1,94 @@
+.post_page {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    padding: 20px;
+    margin: 0 auto;
+}
+
+.post_page_input_container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between; /* To spread elements vertically */
+    min-width: 1200px;
+    padding: 0;
+    gap: 5px; /* Adjust the gap between the fields */
+}
+
+
+.post_page_title_input {
+    color: #000;
+    font-family: 'Noto Sans';
+    font-size: 50px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: normal;
+    border: none;
+    padding: 10px;
+    margin: 5px 0; /* Adjust top and bottom margin */
+    width: 100%;
+    background: none;
+    outline: none;
+}
+
+.post_page_author_input {
+    color: #ACABAB;
+    font-family: 'Noto Sans';
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    border: none;
+    padding: 10px;
+    margin: 0; /* Adjust top and bottom margin */
+    width: 100%;
+    background: none;
+    outline: none;
+}
+.thumbs_up_image {
+    padding: 10px;
+    width: 30px; /* Set the image width */
+    height: 30px; /* Set the image height */
+    flex-shrink: 0;
+}
+
+.like_count {
+    color: #ACABAB;
+    font-family: Noto Sans;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.post_page_content_textarea {
+    font-family: 'Noto Sans';
+    font-size: 20px;
+    color: #000;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    border: none;
+    padding: 10px;
+    margin: 0;
+    width: 1003px;
+    flex-shrink:0;
+    background: none;
+    outline: none;
+    height: 555px;
+    resize: none;
+}
+
+.post_page_post_button {
+    background-color: #009406;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    padding: 8px;
+    border: none;
+    border-radius: 15px;
+    width: 104px;
+    height: 38px;
+    margin-left: 900px; /* Aligns the button to the right within the flex container */
+}
