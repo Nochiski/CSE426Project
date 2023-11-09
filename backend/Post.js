@@ -4,7 +4,6 @@ const postSchema = new mongoose.Schema({
   userId: { //Author Id
     type: String,
     required: true,
-    unique: true
   },
   userName: { // Author name
     type: String,

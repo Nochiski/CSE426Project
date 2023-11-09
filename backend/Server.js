@@ -63,10 +63,10 @@ app.post('/post', authenticateToken, async (req, res) => {
   try {
     const { userId, userName, title, content } = req.body;
 
-    const newPost = new Post(userId, userName, title, content);
+    const newPost = new Post({userId, userName, title, content});
     await newPost.save();
 
-    res.status(201).json();
+    res.status(201).json(newPost);
   }catch(error){
     res.status(500).json({ error: error.message });
   }

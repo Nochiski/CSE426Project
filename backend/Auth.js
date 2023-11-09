@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const secretKey = "SXdhbnRvZ29iYWNrdG9rb3JlYXBsemxldG1lYmViYWNr";
 
 const generateAuthToken = (user) => {
   const payload = {
@@ -7,7 +8,6 @@ const generateAuthToken = (user) => {
   };
   console.log("user : ", user)
   console.log("payload : ", payload)
-  const secretKey = "SXdhbnRvZ29iYWNrdG9rb3JlYXBsemxldG1lYmViYWNr";
 
   const options = { expiresIn: '2h' };
 
@@ -22,7 +22,7 @@ const authenticateToken = (req, res, next) => {
   
     if (token == null) return res.sendStatus(401);
   
-    jwt.verify(token, process.env.JWT_SECRET_KEY, (err, user) => {
+    jwt.verify(token, secretKey, (err, user) => {
       if (err) return res.sendStatus(403); 
       req.user = user;
       next(); 
