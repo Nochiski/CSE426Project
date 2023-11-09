@@ -35,8 +35,10 @@ function PostPage() {
                     className='post_page_author_input'
                     readOnly // set input as read-only
                 />
-                <img src={thumbsUpImage} alt='Thumbs Up' className='thumbs_up_image' />
-                <div className='like_count'>{likeCount}</div>
+                <div className='like_container'>
+                    <img src={thumbsUpImage} alt='Thumbs Up' className='thumbs_up_image' />
+                    <div className='like_count'>{likeCount}</div>
+                </div>
                 <button onClick={handlePost} className='post_page_post_button'>
                     Bid
                 </button>
@@ -48,11 +50,12 @@ function PostPage() {
 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."'
-                className='post_page_content_textarea'
-                readOnly // set textarea as read-only
-            />
-        </div>
-    );
+            className='post_page_content_textarea'
+            readOnly // set textarea as read-only
+        />
+    </div>
+);
+
 }
 
 export default PostPage;

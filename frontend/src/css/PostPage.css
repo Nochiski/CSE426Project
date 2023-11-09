@@ -10,10 +10,13 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: space-between; /* To spread elements vertically */
     min-width: 1200px;
     padding: 0;
-    gap: 5px; /* Adjust the gap between the fields */
+}
+.like_container {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* Adjust the gap between the image and like count */
 }
 
 
@@ -56,11 +59,13 @@
 .like_count {
     color: #ACABAB;
     font-family: Noto Sans;
+
     font-size: 25px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
 }
+
 
 .post_page_content_textarea {
     font-family: 'Noto Sans';
