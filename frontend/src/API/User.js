@@ -3,9 +3,17 @@ import axios from 'axios';
 const API_BASE_URL = 'http://localhost:8080';
 
 //userId must be a metamaskId
-const getUserById = async (id) => {
+const logIn = async (id) => {
+  const data = {
+    id : id,
+  };
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
   try {
-    const response = await axios.get(`/users/${id}`);
+    const response = await axios.post(API_BASE_URL+`/login`, data, config);
     return response; 
   } catch (error) {
     if (error.response && error.response.status === 404) {
@@ -15,7 +23,7 @@ const getUserById = async (id) => {
   }
 };
 
-const postUser = async (userId, userName) =>{
+const reqSignUp = async (userId, userName) =>{
   const data = {
     userId : userId,
     userName : userName
@@ -26,7 +34,7 @@ const postUser = async (userId, userName) =>{
     }
   };
   try{
-    const response = await axios.post(API_BASE_URL+'/users',data, config)
+    const response = await axios.post(API_BASE_URL+'/signUp', data, config)
     return response;
   }catch (error) {
     throw error
@@ -34,4 +42,4 @@ const postUser = async (userId, userName) =>{
 }
 
 
-export { getUserById, postUser };
+export { logIn, reqSignUp };

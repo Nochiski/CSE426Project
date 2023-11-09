@@ -8,10 +8,10 @@ import CoinImg from '../images/Coin.png'
 import ProfileImg from "../images/Profile.png"
 import Notification from "../images/bell.png"
 import Web3 from 'web3';
-import { getUserById, postUser } from '../API/User.js';
+import { logIn, reqSignUp } from '../API/User.js';
 
 function App() {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(sessionStorage.getItem('authToken') ? true : false);
   const [handleLogin, setHandleLogin] = useState(false);
   const [account, setAccount] = useState(null); 
   const [signUp, setSignUp] = useState(false);
@@ -21,13 +21,25 @@ function App() {
     console.log(signUp);
   }, [signUp]);
 
-  const signUpBtnAction = () => {
-    const rseponse = postUser(account, userNameInput)
-  }
+  const signUpBtnAction = async () => {
+    try {
+      const res = await reqSignUp(account, userNameInput);
+      if (res.status === 201) {
+        setSignUp(false);
+        setIsLogin(true);
+        const authToken = res.headers['x-auth-token'];
+        if (authToken) {
+          sessionStorage.setItem('authToken', authToken);
+        }
+      }
+    } catch (error) {
+      console.error('Signup failed:', error);
+    }
+  };
+  
   
   // For login text input
   const handleInputChange = (event) => {
-    // 입력 필드의 새로운 값으로 state를 업데이트합니다.
     setUserNameInput(event.target.value);
   };
   
@@ -50,14 +62,17 @@ function App() {
   
       const fetchUserData = async () => {
         try {
-          const response = await getUserById(account); 
-          //TODO : If the user info is exists, set isLogin true, else, show signup component to login. and If they are clearly singned up, set isLogin true if not, cancel the etherium login.
+          const response = await logIn(account); 
           if (response.status == 404) {
             setSignUp(true)
             console.log(signUp)
           }else {
             setIsLogin(true)
             console.log('User found, logged in');
+            const authToken = response.headers['x-auth-token'];
+            if (authToken) {
+              sessionStorage.setItem('authToken', authToken);
+            }          
           }
         } catch (error) {
           console.log(error)
