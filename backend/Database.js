@@ -24,13 +24,10 @@ const findUserByBIB39 = async (bip39) => {
   }
 };
 
-const findAllPosts = async() => {
-  try{
-    const docs = await Post.find();
-    console.log(docs);
-    return docs;
-  }catch(err){
-    console.error("Fail to connect:", err.message);
-  }
-}
-module.exports = {findUserByBIB39, connectDB};
+const findAllPosts = async () => {
+  const docs = await Post.find();
+  console.log(docs);
+  return docs;
+};
+
+module.exports = {findUserByBIB39, findAllPosts, connectDB};

@@ -74,7 +74,7 @@ app.post('/post', authenticateToken, async (req, res) => {
 
 app.get('/post', async (req, res)=> {
   try {
-    const docs = findAllPosts();
+    const docs = await findAllPosts();
     res.json(docs);
   }catch(error) {
     res.status(500).json({ error: error.message });
