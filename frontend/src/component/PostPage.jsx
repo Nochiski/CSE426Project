@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../css/PostPage.css';
-import thumbsUpImage from '/Users/garrett/Desktop/Senior Year/CSE426/CSE426Project/frontend/src/component/img.png'; // Path to your thumbs up image
+import thumbsUpImage from '../images/thumbsUp.png'; // Path to your thumbs up image
 
 function PostPage() {
     const [title, setTitle] = useState('');
