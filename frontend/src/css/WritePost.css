@@ -16,7 +16,7 @@
 .write_post_title_input {
     font-family: "Noto Sans";
     font-size: 50px;
-    color: #ACABAB;
+    color: #000;
     font-style: normal;
     font-weight: 800;
     line-height: normal;
@@ -27,12 +27,16 @@
     margin: 0; /* Reset margin */
 }
 
+.write_post_title_input::placeholder{
+    color: #ACABAB;
+}
+
 .write_post_title_input:focus{
     outline: none;
 }
 
 .write_post_content_textarea {
-    color: #ACABAB;
+    color: #000;
     font-family: 'Noto Sans';
     font-size: 20px;
     font-style: normal;
@@ -49,6 +53,10 @@
 }
 .write_post_content_textarea:focus{
     outline: none;
+}
+.write_post_content_textarea::placeholder{
+    color: #ACABAB;
+
 }
 
 .write_post_post_button {
