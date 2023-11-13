@@ -1,17 +1,21 @@
 .post_page {
+    padding-top: 80px;
     display: flex;
     flex-direction: column;
-    width: 70%;
-    padding: 20px;
-    margin: 0 auto;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
 }
 
-.post_page_input_container {
+.post_page_info_area {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    min-width: 1200px;
+    justify-content: center;
     padding: 0;
+    align-self: center;
+    justify-self: center;
+    width: 70%;
 }
 .like_container {
     display: flex;
@@ -19,8 +23,15 @@
     gap: 5px; /* Adjust the gap between the image and like count */
 }
 
+.post_page_input_container_upper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
 
-.post_page_title_input {
+.post_page_title {
     color: #000;
     font-family: 'Noto Sans';
     font-size: 50px;
@@ -28,14 +39,15 @@
     font-weight: 800;
     line-height: normal;
     border: none;
-    padding: 10px;
-    margin: 5px 0; /* Adjust top and bottom margin */
     width: 100%;
     background: none;
     outline: none;
+    margin: 0;
+
+    padding-left: 10px;
 }
 
-.post_page_author_input {
+.post_page_author {
     color: #ACABAB;
     font-family: 'Noto Sans';
     font-size: 25px;
@@ -43,12 +55,25 @@
     font-weight: 400;
     line-height: normal;
     border: none;
-    padding: 10px;
-    margin: 0; /* Adjust top and bottom margin */
+    margin: 0; 
     width: 100%;
     background: none;
     outline: none;
+
+    padding-left: 10px;
 }
+
+.post_page_input_container_lower{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    border-top: 0.5px solid #ACABAB;
+    border-bottom: 0.5px solid #ACABAB;
+
+}
+
 .thumbs_up_image {
     padding: 10px;
     width: 30px; /* Set the image width */
@@ -64,10 +89,12 @@
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+
+    margin: 0;
 }
 
 
-.post_page_content_textarea {
+.post_page_content {
     font-family: 'Noto Sans';
     font-size: 20px;
     color: #000;
@@ -76,13 +103,13 @@
     line-height: normal;
     border: none;
     padding: 10px;
-    margin: 0;
-    width: 1003px;
     flex-shrink:0;
-    background: none;
-    outline: none;
-    height: 555px;
-    resize: none;
+    height: auto;
+    width: 70%;
+}
+
+.post_page_content p{
+    margin: 0;
 }
 
 .post_page_post_button {
@@ -95,5 +122,6 @@
     border-radius: 15px;
     width: 104px;
     height: 38px;
-    margin-left: 900px; /* Aligns the button to the right within the flex container */
+    margin-left: auto;
+    
 }

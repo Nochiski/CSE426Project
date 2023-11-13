@@ -29,28 +29,32 @@ function PostPage() {
 
     return (
         <div className='post_page'>
-            <div className='post_page_input_container'>
-                <p className='post_page_title_input'>
-                    {post.title}
-                </p>
-                <p className='post_page_author_input'> 
-                    {post.author}
-                </p>
-
-                <div className='like_container'>
-                    <img src={thumbsUpImage} alt='Thumbs Up' className='thumbs_up_image' />
-                    <div className='like_count'>200</div> {/* it will be chagned */}
+            <div className='post_page_info_area'>
+                <div className='post_page_input_container_upper'>
+                    <p className='post_page_title'>
+                        {post.title}
+                    </p>
+                    <p className='post_page_author'> 
+                        {post.author}
+                    </p>
                 </div>
-                <button onClick={handleBid} className='post_page_post_button'>
-                    Bid
-                </button>
+                <div className='post_page_input_container_lower'>
+                    <div className='like_container'>
+                        <img src={thumbsUpImage} alt='Thumbs Up' className='thumbs_up_image' />
+                        <p className='like_count'>200</p> {/* it will be chagned */}
+                    </div>
+                    <button onClick={handleBid} className='post_page_post_button'>
+                        Bid
+                    </button>
+                </div>
             </div>
-            <p className='post_page_content_textarea'>
-                {post.content}
-            </p>
-    </div>
-);
-
+            <div className='post_page_content'>
+                <p>
+                    {post.content}
+                </p>
+            </div>
+        </div>
+    );
 }
 
 export default PostPage;
