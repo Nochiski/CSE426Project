@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import '../css/WritePost.css';
+import { createPost } from '../API/Post';
+import { useNavigate } from 'react-router-dom';
 
 function WritePost() {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    const navigate = useNavigate(); // This hook gives you access to navigate function.
 
-    const handlePost = () => {
-        // Action when 'Post' button is clicked
-        // For example: Submit the post data to the backend
-        console.log('Title:', title);
-        console.log('Content:', content);
-        // Add functionality to send the post data to the backend/manage locally
+    const handlePost = async() => {
+        await createPost(title, content);
+        navigate('/');
     };
 
     return (

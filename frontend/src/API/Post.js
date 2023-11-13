@@ -17,4 +17,25 @@ const getPost = async () => {
     }
 }
 
-export {getPost};
+const createPost = async (title, content) => {
+    try{
+        const data = {
+            userId : sessionStorage.getItem("userId"),
+            userName : sessionStorage.getItem("userName"),
+            title : title,
+            content : content
+          };
+          const config = {
+            headers: {
+              'Content-Type': 'application/json',
+              'authorization' : 'Bearer '+sessionStorage.getItem("authToken")
+            }
+          };
+        const response = await axios.post(API_BASE_URL+'/post', data, config)    
+        return response
+    }catch(err){
+        console.log(err)
+    }
+}
+
+export {getPost, createPost};

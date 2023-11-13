@@ -29,9 +29,9 @@ function App() {
         setSignUp(false);
         setIsLogin(true);
         const authToken = res.headers['x-auth-token'];
-        if (authToken) {
-          sessionStorage.setItem('authToken', authToken);
-        }
+        sessionStorage.setItem('authToken', authToken);
+        sessionStorage.setItem('userName', res.data.userName);
+        sessionStorage.setItem('userId', account);
       }
     } catch (error) {
       console.error('Signup failed:', error);
@@ -71,9 +71,9 @@ function App() {
             setIsLogin(true)
             console.log('User found, logged in');
             const authToken = response.headers['x-auth-token'];
-            if (authToken) {
-              sessionStorage.setItem('authToken', authToken);
-            }          
+            sessionStorage.setItem('authToken', authToken);
+            sessionStorage.setItem('userName', response.data.userName);
+            sessionStorage.setItem('userId', account) 
           }
         } catch (error) {
           console.log(error)
@@ -85,7 +85,6 @@ function App() {
     }
   };
   
-
   return (
     <Router>
       <div className="nav_bar">
@@ -129,7 +128,7 @@ function App() {
         <Routes>
           <Route path="/" element={<PostList handleLogin={handleLogin} isLogin={isLogin}></PostList>}></Route>
           <Route path="/write" element={<WritePost></WritePost>}></Route>
-          <Route path="/post" element={<PostPage></PostPage>}></Route>
+          <Route path="/post:id" element={<PostPage></PostPage>}></Route>
         </Routes>
       </div>
     </Router>

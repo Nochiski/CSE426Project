@@ -10,7 +10,6 @@
     display: flex;
     flex-direction: row; /* Stack items vertically */
     align-items: flex-start; /* Align items at the start (left side) */
-    min-width: 1200px;
     padding: 0; /* Reset padding for container */
 }
 
@@ -28,6 +27,10 @@
     margin: 0; /* Reset margin */
 }
 
+.write_post_title_input:focus{
+    outline: none;
+}
+
 .write_post_content_textarea {
     color: #ACABAB;
     font-family: 'Noto Sans';
@@ -42,7 +45,10 @@
     background: #FFF;
     border-radius: 0;
     height: 60vh;
-    padding-right: 138px; /* Create space for the button */
+    padding: 15px;
+}
+.write_post_content_textarea:focus{
+    outline: none;
 }
 
 .write_post_post_button {

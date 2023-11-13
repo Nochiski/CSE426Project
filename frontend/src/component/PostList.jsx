@@ -31,10 +31,14 @@ function PostList(handleLogin, isLogin) {
 
 
   const handleClick = (item) => {
-    console.log(item.id)
+    navigate(`/post/${item.id}`)
   }
   const write = () => {
-    navigate("/write") 
+    if (isLogin){
+      navigate("/write");
+    }else{
+      alert("You need to log in");
+    }
   }
 
   return (
