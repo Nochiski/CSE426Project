@@ -25,7 +25,7 @@ const findUserByBIB39 = async (bip39) => {
 };
 
 const findAllPosts = async () => {
-  const docs = await Post.find();
+  const docs = await Post.find().sort({ createdAt: -1 });
   console.log(docs);
   return docs;
 };
