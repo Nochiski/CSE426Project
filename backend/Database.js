@@ -30,4 +30,14 @@ const findAllPosts = async () => {
   return docs;
 };
 
-module.exports = {findUserByBIB39, findAllPosts, connectDB};
+const findPostById = async (id) => {
+  try {
+    const docs = await Post.findOne({_id: id});
+    return docs;
+  }catch(err) {
+    console.error('Error occurred in findPostById function: ', err);
+    return null
+  }
+}
+
+module.exports = {findUserByBIB39, findPostById, findAllPosts, connectDB};

@@ -38,4 +38,18 @@ const createPost = async (title, content) => {
     }
 }
 
-export {getPost, createPost};
+const getPostById = async (id) => {
+    const response = await axios.get(API_BASE_URL+`/post/${id}`);
+    if (response.status === 200){
+        const item = response.data;
+        const postInfos = new PostInfo(item._id, 
+                item.title, 
+                item.userName, 
+                item.createdAt, 
+                item.content
+        );
+        return postInfos;
+    }
+}
+
+export {getPost, createPost, getPostById};

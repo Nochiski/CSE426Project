@@ -1,6 +1,6 @@
 const express = require('express'); 
 const cors = require('cors'); // for CORS config
-const { findUserByBIB39, findAllPosts, connectDB } = require('./Database');
+const { findUserByBIB39, findAllPosts, connectDB, findPostById } = require('./Database');
 const User = require('./UserInfo'); 
 const Post = require('./Post')
 const { generateAuthToken, authenticateToken } = require('./Auth');
@@ -80,6 +80,19 @@ app.get('/post', async (req, res)=> {
     res.status(500).json({ error: error.message });
   }
 })
+
+app.get('/post/:id', async (req, res) => {
+  try {
+    const doc = await findPostById(req.params.id);
+    if (!doc) {
+      return res.status(404).json({ message: 'Post not found' });
+    }
+    console.log(doc);
+    res.json(doc);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

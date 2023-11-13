@@ -126,9 +126,9 @@ function App() {
           </div>
         }    
         <Routes>
-          <Route path="/" element={<PostList handleLogin={handleLogin} isLogin={isLogin}></PostList>}></Route>
+          <Route path="/" element={<PostList isLogin={isLogin}></PostList>}></Route>
           <Route path="/write" element={<WritePost></WritePost>}></Route>
-          <Route path="/post:id" element={<PostPage></PostPage>}></Route>
+          <Route path="/post/:id" element={<PostPage></PostPage>}></Route>
         </Routes>
       </div>
     </Router>
