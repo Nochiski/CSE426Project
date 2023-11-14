@@ -31,8 +31,9 @@
 .post_list_item_author{
     color: #000;
 
+    padding-left: 30px;
     font-family: Noto Sans;
-    font-size: 25px;
+    font-size: 20px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;

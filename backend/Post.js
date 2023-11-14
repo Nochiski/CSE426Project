@@ -4,6 +4,7 @@ const postSchema = new mongoose.Schema({
   userId: { //Author Id
     type: String,
     required: true,
+    unique: false
   },
   userName: { // Author name
     type: String,
@@ -13,10 +14,10 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  content: {
+  likedUsers: [{
     type: String,
-    required: true
-  } 
+    ref: 'User' 
+  }]
 }, {
   timestamps: true 
 });

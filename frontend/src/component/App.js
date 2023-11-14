@@ -96,7 +96,7 @@ function App() {
           <input className="nav_bar_search" type="text" placeholder="Search"></input>
         </form>
 
-        {isLogin ?
+        {sessionStorage.getItem("userId") ?
         <div className="nav_bar_user_info">
           <img src={CoinImg}/>
           <p className="nav_bar_user_info_amount">1000</p>
@@ -126,7 +126,7 @@ function App() {
           </div>
         }    
         <Routes>
-          <Route path="/" element={<PostList isLogin={isLogin}></PostList>}></Route>
+          <Route path="/" element={<PostList></PostList>}></Route>
           <Route path="/write" element={<WritePost></WritePost>}></Route>
           <Route path="/post/:id" element={<PostPage></PostPage>}></Route>
         </Routes>

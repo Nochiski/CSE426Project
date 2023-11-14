@@ -10,7 +10,7 @@ import React, {useEffect, useState} from 'react';
 import {getPost} from '../API/Post.js'
 
 
-function PostList(isLogin) {
+function PostList() {
   const navigate = useNavigate(); // This hook gives you access to navigate function.
   const [src, setSrc] = useState(WritingImg);
   const [post, setPost] = useState([]);
@@ -34,7 +34,7 @@ function PostList(isLogin) {
     navigate(`/post/${item.id}`);
   }
   const write = () => {
-    if (isLogin){
+    if (sessionStorage.getItem("userId")){
       navigate("/write");
     }else{
       alert("You need to log in");

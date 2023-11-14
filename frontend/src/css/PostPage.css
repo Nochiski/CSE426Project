@@ -106,10 +106,15 @@
     flex-shrink:0;
     height: auto;
     width: 70%;
+
+    display: flex;
+    flex-direction: column;
+
 }
 
 .post_page_content p{
     margin: 0;
+    padding-bottom: 50px;
 }
 
 .post_page_post_button {
@@ -123,5 +128,29 @@
     width: 104px;
     height: 38px;
     margin-left: auto;
-    
+}
+
+.post_page_like_button{
+    border: none;
+    margin: 0; 
+    background: none;
+    outline: none;
+
+    align-self: center;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    color: #ACABAB;
+
+    font-family: Noto Sans;
+    font-size: 25px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.post_page_like_button img{
+    padding-right: 10px;
 }

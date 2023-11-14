@@ -94,6 +94,29 @@ app.get('/post/:id', async (req, res) => {
   }
 });
 
+app.post('/posts/:postId/like', authenticateToken, async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    const userId = req.body.userId; 
+
+    const post = await Post.findById(postId);
+
+    if (post.likedUsers.includes(userId)) {
+      post.likedUsers = post.likedUsers.filter(user => user !== userId);
+    } else {
+      post.likedUsers.push(userId);
+    }
+
+    await post.save();
+
+    console.log(post.likedUsers)
+    
+    res.status(200).send(post); 
+  } catch (error) {
+    res.status(500).send(error.toString());
+  }
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

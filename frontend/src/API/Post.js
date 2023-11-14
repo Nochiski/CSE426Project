@@ -3,16 +3,24 @@ import PostInfo from "../model/PostInfo"
 
 const API_BASE_URL = 'http://localhost:8080';
 
+const setPost = (item) => {
+    const post = new PostInfo(item._id, 
+        item.title, 
+        item.userName, 
+        item.createdAt, 
+        item.content,
+        item.likedUsers 
+    )
+    return post;
+}
+
 const getPost = async () => {
     const response = await axios.get(API_BASE_URL+'/post');
     if (response.status === 200){
+        console.log(response.data)
         const postInfos = response.data.map(item =>
-             new PostInfo(item._id, 
-                item.title, 
-                item.userName, 
-                item.createdAt, 
-                item.content
-        ));
+            setPost(item)
+        );
         return postInfos;
     }
 }
@@ -41,15 +49,31 @@ const createPost = async (title, content) => {
 const getPostById = async (id) => {
     const response = await axios.get(API_BASE_URL+`/post/${id}`);
     if (response.status === 200){
-        const item = response.data;
-        const postInfos = new PostInfo(item._id, 
-                item.title, 
-                item.userName, 
-                item.createdAt, 
-                item.content
-        );
+        const postInfos = setPost(response.data);
         return postInfos;
     }
 }
 
-export {getPost, createPost, getPostById};
+const likePost = async (postId, userId) => {
+    try{
+        const data = {
+            userId : sessionStorage.getItem("userId"),
+            userName : sessionStorage.getItem("userName"),
+            postId : postId,
+            userId : userId
+          };
+          const config = {
+            headers: {
+              'Content-Type': 'application/json',
+              'authorization' : 'Bearer '+sessionStorage.getItem("authToken")
+            }
+          };
+
+        const response = await axios.post(API_BASE_URL+`/posts/${postId}/like`, data, config);
+        return response
+    }catch(err){
+        console.log(err)
+    }
+}
+
+export {likePost, getPost, createPost, getPostById};
