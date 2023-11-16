@@ -14,6 +14,7 @@ build/contracts
 # Dependency directories
 node_modules/
 jspm_packages/
+**/package-lock.json
 
 # Distribution directories
 dist/

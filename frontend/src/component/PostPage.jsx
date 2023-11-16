@@ -6,16 +6,21 @@ import Post from '../model/PostInfo';
 import { useParams } from 'react-router-dom';
 import LikefillBtn from "../images/hand.thumbsup.fill.png"
 import LikeBtn from "../images/hand.thumbsup.png"
+import AskBid from './AskBid';
 
 function PostPage() {
     const [post, setPost] = useState(new Post());
     const { id } = useParams();
     const [liked, setLiked] = useState(false);
+    const [isBidding, setIsBidding] = useState(false);
 
     const handleBid = () => {
-        // Functionality to handle post submission
-        // Add functionality to send the post data to the backend/manage locally
+        setIsBidding(true)
     };
+
+    const closeBid = () => {
+        setIsBidding(false)
+    }
 
     useEffect(()=>{
         async function fetchPosts() {
@@ -50,6 +55,9 @@ function PostPage() {
 
     return (
         <div className='post_page'>
+                    {isBidding && 
+            <AskBid closeBid={closeBid}></AskBid>
+        }
             <div className='post_page_info_area'>
                 <div className='post_page_input_container_upper'>
                     <p className='post_page_title'>
