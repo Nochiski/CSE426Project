@@ -14,6 +14,9 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  content: {
+    type: String,
+  },
   likedUsers: [{
     type: String,
     ref: 'User' 

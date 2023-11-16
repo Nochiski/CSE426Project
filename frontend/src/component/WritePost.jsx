@@ -9,6 +9,7 @@ function WritePost() {
     const navigate = useNavigate(); // This hook gives you access to navigate function.
 
     const handlePost = async() => {
+        console.log(content)
         await createPost(title, content);
         navigate('/');
     };

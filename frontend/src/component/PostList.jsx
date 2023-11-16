@@ -18,8 +18,10 @@ function PostList() {
   useEffect(() => {
     async function fetchPosts() {
       try {
-        const postInfos = await getPost(); 
-        setPost(postInfos); 
+        const postInfos = await getPost();
+        if(postInfos){
+          setPost(postInfos); 
+        }
       } catch (error) {
         console.error("Error in useEffect from PostList.jsx:", error);
       }
