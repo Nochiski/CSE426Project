@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.13;
 
 import "./BlogCraftNFT.sol";
 import "./WriteToken.sol";
@@ -23,6 +23,18 @@ contract TokenSwap {
     constructor(address _blogNFT, address _writeToken) {
         blogNFT = BlogCraftNFT(_blogNFT);
         writeToken = WriteToken(_writeToken);
+    }
+
+    function getWTT(address publisher) external view returns (uint256) {
+        return writeToken.balanceOf(publisher);
+    }
+
+    function rewardPublisher(address publisher) external {
+        writeToken.rewardPublisher(publisher);
+    }
+
+    function likePost(address viewer) external {
+        writeToken.likePost(viewer);
     }
 
     function createPostNFT(address author, string memory tokenURI) external returns (uint256) {

@@ -1,20 +1,26 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract BlogCraftNFT is ERC721URIStorage {
-    uint256 private latestTokenId;
+    using Counters for Counters.Counter;
+    Counters.Counter private _tokenIds;
+
     event postnftcreated(address indexed author, uint256 indexed tokenId, string tokenURI);
 
     constructor() ERC721("BlogCraftNTF", "BPT") {}
 
     function createPostNFT(address author, string memory tokenURI) external returns (uint256) {
-        latestTokenId = latestTokenId + 1;
-        _mint(author, latestTokenId);
-        _setTokenURI(latestTokenId, tokenURI);
-        emit postnftcreated(author, latestTokenId, tokenURI);
-        return latestTokenId;
+        _tokenIds.increment();
+
+        uint256 newItemId = _tokenIds.current();
+
+        _mint(author, newItemId);
+        _setTokenURI(newItemId, tokenURI);
+        emit postnftcreated(author, newItemId, tokenURI);
+        return newItemId;
     }
 }
 

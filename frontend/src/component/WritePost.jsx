@@ -2,16 +2,28 @@ import React, { useState } from 'react';
 import '../css/WritePost.css';
 import { createPost } from '../API/Post';
 import { useNavigate } from 'react-router-dom';
+import { useWeb3 } from '../CustomHook/UseWeb3';
 
-function WritePost(web3) {
+function WritePost() {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
-    const navigate = useNavigate(); // This hook gives you access to navigate function.
+    const navigate = useNavigate(); 
+    const web3 = useWeb3()
 
     const handlePost = async() => {
-        console.log(content)
-        await createPost(title, content);
-
+        const response = await createPost(title, content);
+        async function createPostNFT() {
+            if (web3){
+                try{
+                    const userID = sessionStorage.getItem("userId");
+                    await web3.methods.rewardPublisher(userID).send({from: userID})
+                    await web3.methods.createPostNFT(userID, `http://localhost:8080/uri/${response.data._id}`).send({from: userID});
+                }catch(error){
+                    console.log("error in handlePost of WirtePost.jsx", error);
+                }
+            }
+        }
+        await createPostNFT()
         navigate('/');
     };
 

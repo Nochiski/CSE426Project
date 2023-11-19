@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.19;
+pragma solidity ^0.8.13;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
@@ -8,7 +8,6 @@ contract WriteToken is ERC20 {
     event LikedPost(address indexed viewer, uint256 amount);
 
     constructor() ERC20("WrtingToken", "WTT") {
-        _mint(msg.sender, 1000000 * 10 ** decimals());
     }
     /*
     * Give 20 tokens to the Post Author

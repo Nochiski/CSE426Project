@@ -7,13 +7,14 @@ import { useParams } from 'react-router-dom';
 import LikefillBtn from "../images/hand.thumbsup.fill.png"
 import LikeBtn from "../images/hand.thumbsup.png"
 import AskBid from './AskBid';
+import { useWeb3 } from '../CustomHook/UseWeb3';
 
 function PostPage() {
     const [post, setPost] = useState(new Post());
     const { id } = useParams();
     const [liked, setLiked] = useState(false);
     const [isBidding, setIsBidding] = useState(false);
-
+    const web3 = useWeb3();
     const handleBid = () => {
         setIsBidding(true)
     };
@@ -25,7 +26,7 @@ function PostPage() {
     useEffect(()=>{
         async function fetchPosts() {
             try {
-              const postInfos = await getPostById(id); 
+              const postInfos = await getPostById(id);
               setPost(postInfos); 
               console.log(postInfos)
             } catch (error) {
@@ -45,7 +46,10 @@ function PostPage() {
         if (res.status === 200) {
             try {
                 const postInfos = await getPostById(id); 
-                setPost(postInfos); 
+                setPost(postInfos);
+                const userID = sessionStorage.getItem("userId");
+                await web3.methods.likePost(userID).send({from: userID})
+
                 console.log(postInfos)
             } catch (error) {
                 console.error("Error in handleLike from PostList.jsx:", error);

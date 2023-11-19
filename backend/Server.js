@@ -61,6 +61,20 @@ app.post('/signUp', async (req, res) => {
   }
 });
 
+
+app.get('/uri/:uri', async (req, res) => {
+  try {
+    const filePath = `${__dirname}/uri/${req.params.uri}.json`; 
+    const fileContent = await fs.readFile(filePath, 'utf8');
+    const json = JSON.parse(fileContent); 
+    res.status(200).json(json);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 app.post('/post', authenticateToken, async (req, res) => {
   try {
     const { userId, userName, title, content } = req.body;

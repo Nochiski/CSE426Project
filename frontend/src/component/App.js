@@ -6,10 +6,10 @@ import PostList from './PostList.jsx'
 import WritePost from './WritePost.jsx'
 import PostPage from './PostPage.jsx'
 import CoinImg from '../images/Coin.png'
-import ProfileImg from "../images/Profile.png"
+//import ProfileImg from "../images/Profile.png"
 import Notification from "../images/bell.png"
-import Web3 from 'web3';
 import { logIn, reqSignUp } from '../API/User.js';
+import { useWeb3 } from "../CustomHook/UseWeb3.js";
 
 function App() {
   const [isLogin, setIsLogin] = useState(sessionStorage.getItem('authToken') ? true : false);
@@ -17,11 +17,22 @@ function App() {
   const [account, setAccount] = useState(null); 
   const [signUp, setSignUp] = useState(false);
   const [userNameInput, setUserNameInput] = useState('')
-  const [web3, setWeb3] = useState(null);
+  const [amount, setAmount] = useState(Number(0));
+  const web3 = useWeb3();
 
   useEffect(() => {
-    console.log(signUp);
-  }, [signUp]);
+    async function fetchBalance() {
+      if (web3) {
+        const userId = sessionStorage.getItem("userId");
+        const result = await web3.methods.getWTT(userId).call();
+        let divisor = 1000000000000000000n;
+        console.log(result/divisor)
+        setAmount(Number(result/divisor))
+      }
+    }
+
+    fetchBalance();
+  }, [web3, amount]);
   
   const signUpBtnAction = async () => {
     try {
@@ -49,16 +60,13 @@ function App() {
       alert('Please install MetaMask!');
       return;
     }
-  
+
     try {
       const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
       if (accounts.length === 0) {
         alert('MetaMask is locked or the user has not connected any accounts');
         return;
       }
-      const web3Instance = new Web3(window.ethereum);
-      setWeb3(web3Instance); // set Web3 instance
-      console.log(web3)
 
       const account = accounts[0];
       setAccount(account);
@@ -109,7 +117,7 @@ function App() {
         {sessionStorage.getItem("userId") ?
         <div className="nav_bar_user_info">
           <img src={CoinImg}/>
-          <p className="nav_bar_user_info_amount">1000</p>
+          <p className="nav_bar_user_info_amount">{amount}</p>
           <button className="nav_bar_user_info_notification">
             <img src={Notification}></img>
           </button>
@@ -139,12 +147,13 @@ function App() {
         }    
         <Routes>
           <Route path="/" element={<PostList></PostList>}></Route>
-          <Route path="/write" element={<WritePost web3={web3}></WritePost>}></Route>
+          <Route path="/write" element={<WritePost></WritePost>}></Route>
           <Route path="/post/:id" element={<PostPage></PostPage>}></Route>
         </Routes>
       </div>
     </Router>
   );
 }
+
 
 export default App;
