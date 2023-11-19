@@ -3,7 +3,6 @@ import '../css/WritePost.css';
 import { createPost } from '../API/Post';
 import { useNavigate } from 'react-router-dom';
 import { useWeb3 } from '../CustomHook/UseWeb3';
-import { CallERC721 } from '../CustomHook/CallERC721';
 
 function WritePost() {
     const [title, setTitle] = useState('');
@@ -37,7 +36,7 @@ function WritePost() {
                     });
 
 
-                }catch(error){                                              //http://localhost:8080/uri/6559a708d00fa50fc2879535
+                }catch(error){                                             
                     console.log("error in handlePost of WirtePost.jsx", error);
                 }
             }

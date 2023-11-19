@@ -10,6 +10,9 @@ contract TokenSwap {
     event OfferMade(uint256 indexed postId, address indexed buyer, address indexed seller,uint256 amount, string message); // Event when new offer is created
     event OfferAccepted(uint256 indexed tokenId, address indexed buyer);
     event OfferRejected(uint256 indexed tokenId, address indexed buyer);
+    event RewardedPublisher(address indexed publisher, uint256 amount);
+    event LikedPost(address indexed viewer, uint256 amount);
+    event postnftcreated(address indexed author, uint256 indexed tokenId, string tokenURI);
 
     modifier noExistingOffer(uint256 postId) {
         require(!postOffers[postId].exists, "An offer already exists for this post");
@@ -55,15 +58,31 @@ contract TokenSwap {
     }
 
     function rewardPublisher(address publisher) external {
-        writeToken.rewardPublisher(publisher);
+        uint256 rewardAmount = 20 * 10 ** writeToken.decimals();
+
+        writeToken.rewardPublisher(publisher, rewardAmount);
+        emit RewardedPublisher(publisher, rewardAmount); 
+
+    }
+
+    function getTokenIdFromURI(string memory uri) external view returns (uint256){
+        require(blogNFT.getTokenIdFromURI(uri) != 0, "Token URI does not exist");
+
+        return blogNFT.getTokenIdFromURI(uri);
     }
 
     function likePost(address viewer) external {
-        writeToken.likePost(viewer);
+        uint256 rewardAmount = 1 * 10 ** writeToken.decimals();
+
+        writeToken.likePost(viewer, rewardAmount);
+        emit LikedPost(viewer, rewardAmount);
     }
 
     function createPostNFT(string memory tokenURI) external returns (uint256) {
-        return blogNFT.createPostNFT(msg.sender, tokenURI);
+        uint256 itemId = blogNFT.createPostNFT(msg.sender, tokenURI);
+        emit postnftcreated(msg.sender, itemId, tokenURI);
+
+        return itemId;
     }
     
     function makeOffer(uint256 postId, uint256 offerAmount, string memory message) 

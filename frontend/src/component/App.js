@@ -9,7 +9,8 @@ import CoinImg from '../images/Coin.png'
 //import ProfileImg from "../images/Profile.png"
 import Notification from "../images/bell.png"
 import { logIn, reqSignUp } from '../API/User.js';
-import { useWeb3 } from "../CustomHook/UseWeb3.js";
+import { getERC20Address, useWeb3 } from "../CustomHook/UseWeb3.js";
+import TokenImage from "../images/Coin.png";
 
 function App() {
   const [isLogin, setIsLogin] = useState(sessionStorage.getItem('authToken') ? true : false);
@@ -26,11 +27,9 @@ function App() {
         const userId = sessionStorage.getItem("userId");
         const result = await web3.methods.getWTT(userId).call();
         let divisor = 1000000000000000000n;
-        console.log(result/divisor)
         setAmount(Number(result/divisor))
       }
     }
-
     fetchBalance();
   }, [web3, amount]);
   
@@ -44,6 +43,34 @@ function App() {
         sessionStorage.setItem('authToken', authToken);
         sessionStorage.setItem('userName', res.data.userName);
         sessionStorage.setItem('userId', account);
+        const tokenAddress = getERC20Address();
+        const tokenSymbol = 'WTT';
+        const tokenDecimals = 20;
+        const tokenImage = TokenImage;
+
+        try {
+          // 'wasAdded' is a boolean. Like any RPC method, an error can be thrown.
+          const wasAdded = await window.ethereum.request({
+            method: 'wallet_watchAsset',
+            params: {
+              type: 'ERC20',
+              options: {
+                address: tokenAddress, // The address of the token.
+                symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 characters.
+                decimals: tokenDecimals, // The number of decimals in the token.
+                image: tokenImage, // A string URL of the token logo.
+              },
+            },
+          });
+
+          if (wasAdded) {
+            console.log('Thanks for your interest!');
+          } else {
+            console.log('Your loss!');
+          }
+        } catch (error) {
+          console.log(error);
+        }
       }
     } catch (error) {
       console.error('Signup failed:', error);

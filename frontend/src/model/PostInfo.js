@@ -1,8 +1,9 @@
 class PostInfo {
-    constructor(id, title, author, date, content, likedUsers) {
+    constructor(id, title, author, authorId, date, content, likedUsers) {
         this.id = id;
         this.title = title;
         this.author = author;
+        this.authorId = authorId;
         this.date = date;
         this.content = content;
         this.likedUsers = likedUsers;

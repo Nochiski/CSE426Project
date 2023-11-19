@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import '../css/PostPage.css';
-import thumbsUpImage from '../images/thumbsUp.png'; // Path to your thumbs up image
+import thumbsUpImage from '../images/thumbsUp.png'; 
 import { getPostById, likePost } from '../API/Post';
 import Post from '../model/PostInfo';
 import { useParams } from 'react-router-dom';
@@ -15,27 +15,74 @@ function PostPage() {
     const [liked, setLiked] = useState(false);
     const [isBidding, setIsBidding] = useState(false);
     const web3 = useWeb3();
+    const [isMyPost, setIsMyPost] = useState(false);
+    const [isMounted, setIsMounted] = useState(true);
+
     const handleBid = () => {
         setIsBidding(true)
     };
 
-    const closeBid = () => {
+    const closeBid = async (bidMessage, bidAmount) => {
+        const userId = sessionStorage.getItem("userId")
+        try{
+            console.log(`localhost:8080/uri/${post.id}`);
+            const tokenId = await web3.methods.getTokenIdFromURI(`localhost:8080/uri/${post.id}`).call(); // Why it doesn't work?
+            console.log(tokenId)
+            if(tokenId){
+                console.log("tokenid", tokenId)
+                await web3.methods.makeOffer(tokenId, bidAmount, bidMessage).send(userId);
+            }else{
+                console.log("erorr: fail to make an offer")
+            }
+    
+        }catch(error){
+            console.log("fail to get tokenID:", error)
+        }
         setIsBidding(false)
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         async function fetchPosts() {
             try {
-              const postInfos = await getPostById(id);
-              setPost(postInfos); 
-              console.log(postInfos)
+                const postInfos = await getPostById(id);
+                setPost(postInfos);     
+                if(sessionStorage.getItem("userId") === postInfos.authorId ){
+                    setIsMyPost(true);
+                }
             } catch (error) {
-              console.error("Error in useEffect from PostList.jsx:", error);
+                console.error("Error in useEffect from PostList.jsx:", error);
             }
-          }
-          fetchPosts();      
-    },[])
-
+        }
+        fetchPosts();
+        /*
+        const web3Instance = new Web3('ws://127.0.0.1:7545');
+        const contractABI = getABI();
+        const contractAddress = getAddress();
+    
+        if (web3Instance && contractABI && contractAddress) {
+            const myContract = new web3Instance.eth.Contract(contractABI, contractAddress);
+    
+            try {
+                if (myContract && myContract.events) {
+                    const eventSubscription = myContract.events.LikedPost({
+                        filter: { viewer: sessionStorage.getItem("userId") },
+                        fromBlock: 0
+                    })
+                    .on('data', function(event) {
+                        console.log('New LikedPost Event:', event);
+                    })
+                    .on('error', console.error);
+            
+                    return () => {
+                        eventSubscription.unsubscribe();
+                    };
+                }
+            } catch (error) {
+                console.error("Error :", error);
+            }        
+        }*/
+        }, []);
+    
     const handleLike = async() => {
         if(!sessionStorage.getItem("userId")){
             alert("You need to login first");
@@ -48,9 +95,9 @@ function PostPage() {
                 const postInfos = await getPostById(id); 
                 setPost(postInfos);
                 const userID = sessionStorage.getItem("userId");
-                await web3.methods.likePost(userID).send({from: userID})
-
-                console.log(postInfos)
+                if(!isMyPost){
+                    await web3.methods.likePost(userID).send({from: userID})
+                }
             } catch (error) {
                 console.error("Error in handleLike from PostList.jsx:", error);
             }
@@ -76,9 +123,12 @@ function PostPage() {
                         <img src={thumbsUpImage} alt='Thumbs Up' className='thumbs_up_image' />
                         <p className='like_count'>{post.numberOfLikes}</p>
                     </div>
+                    {!isMyPost &&
                     <button onClick={handleBid} className='post_page_post_button'>
                         Bid
                     </button>
+
+                    }
                 </div>
             </div>
             <div className='post_page_content'>

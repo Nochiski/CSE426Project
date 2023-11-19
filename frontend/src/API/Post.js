@@ -6,7 +6,8 @@ const API_BASE_URL = 'http://localhost:8080';
 const setPost = (item) => {
     const post = new PostInfo(item._id, 
         item.title, 
-        item.userName, 
+        item.userName,
+        item.userId, 
         item.createdAt, 
         item.content,
         item.likedUsers 

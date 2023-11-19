@@ -3,10 +3,28 @@ import "../css/AskBid.css"
 
 function AskBid({closeBid}) {
     const [bidMessage, setBidMessage] = useState("")
+    const [bidAmount, setBidAmount] = useState()
 
     const handleChange = (e) => {
         if(e.target.value.length <= 200){
             setBidMessage(e.target.value)
+        }
+    }
+
+    const amountChange = (e) => {
+        const value = parseFloat(e.target.value);
+        if (!isNaN(value)) {
+            setBidAmount(value); 
+        }else if (e.target.value.length === 0){
+            setBidAmount(null);
+        }
+    }
+
+    const offerBuy = () => {
+        if(isNaN(bidAmount) || !bidAmount){
+            alert("Invalid bid amount")
+        }else{
+            closeBid(bidMessage, bidAmount);
         }
     }
     
@@ -23,22 +41,26 @@ function AskBid({closeBid}) {
                     </textarea>
 
                     <p className="ask_bid_msg_counter">Characters: {bidMessage.length}/200</p>
-                    <div className="ask_bid_nfts"> {/* other nfts(for bidding) */}
+                  {/*  <div className="ask_bid_nfts"> {/* other nfts(for bidding) }
                         <p>Choose my NFTs for trading</p>
                         <div>
 
                         </div>
-                    </div>
+                    </div>*/}
                     <form className="ask_bid_token">
 
-                    <input type='text' placeholder="put bid amount"></input>
+                        <input type='text' 
+                            placeholder="put bid amount"
+                            onChange={(e)=>{amountChange(e)}} 
+                            value={bidAmount}>
+                        </input>
                     </form>
 
                 </div>
                 <div className="ask_bid_bid_area">
                     <button className="ask_bid_bid_button"
                         onClick={
-                            closeBid
+                            offerBuy
                         }>Bid</button>
                 </div>
             </div>

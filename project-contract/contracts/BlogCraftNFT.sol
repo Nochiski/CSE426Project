@@ -8,7 +8,8 @@ contract BlogCraftNFT is ERC721URIStorage {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
-    event postnftcreated(address indexed author, uint256 indexed tokenId, string tokenURI);
+    mapping(string => uint256) private uriToTokenId;
+
 
     constructor() ERC721("BlogCraftNTF", "BPT") {}
 
@@ -17,8 +18,13 @@ contract BlogCraftNFT is ERC721URIStorage {
         uint256 newItemId = _tokenIds.current();
         _mint(author, newItemId);
         _setTokenURI(newItemId, tokenURI);
-        emit postnftcreated(author, newItemId, tokenURI);
+        uriToTokenId[tokenURI] = newItemId;
+
         return newItemId;
+    }
+
+    function getTokenIdFromURI(string memory uri) public view returns (uint256) {
+        return uriToTokenId[uri];
     }
 }
 

@@ -1,16 +1,35 @@
 import { useState, useEffect } from 'react';
 import Web3 from 'web3';
 
+const ERC1155Address = "0xF5712eB979939Ee5A55e9994E7681e4C0cad10bb"
+const ERC20Address = "0x4Bd407C9da7B7075Ac525ea19c7A2c6D5322F26E"
+const ERC721Address = "0x4759BB65FC27539A4c162c2941bdf3C809e00E00"
+
 export function useWeb3() {
   const [contract, setContract] = useState(null);
 
   useEffect(() => {
     const web3 = new Web3('http://127.0.0.1:7545');
-    const myContractInstance = new web3.eth.Contract(myContractABI, '0x94393030D6E492867c860c957c8646c7b0eeD979');
+    const myContractInstance = new web3.eth.Contract(myContractABI, ERC1155Address);
     setContract(myContractInstance);
   }, []);
 
   return contract;
+}
+
+export function getABI() {
+  return myContractABI;
+}
+
+export function getAddress() {
+  return ERC1155Address;
+}
+
+export function getERC20Address() {
+  return ERC20Address;
+}
+export function getERC721Address() {
+  return ERC721Address;
 }
 
 const myContractABI = [
@@ -29,6 +48,25 @@ const myContractABI = [
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "viewer",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "LikedPost",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -106,6 +144,50 @@ const myContractABI = [
     "type": "event"
   },
   {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "publisher",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "RewardedPublisher",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "author",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "tokenURI",
+        "type": "string"
+      }
+    ],
+    "name": "postnftcreated",
+    "type": "event"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -172,6 +254,26 @@ const myContractABI = [
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "uri",
+        "type": "string"
+      }
+    ],
+    "name": "getTokenIdFromURI",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function",
+    "constant": true
   },
   {
     "inputs": [
