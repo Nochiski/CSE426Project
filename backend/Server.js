@@ -1,7 +1,9 @@
 const express = require('express'); 
 const cors = require('cors'); // for CORS config
 const { findUserByBIB39, findAllPosts, connectDB, findPostById } = require('./Database');
-const User = require('./UserInfo'); 
+const User = require('./UserInfo');
+const fs = require('fs').promises;
+const path = require('path');
 const Post = require('./Post')
 const { generateAuthToken, authenticateToken } = require('./Auth');
 
@@ -66,8 +68,17 @@ app.post('/post', authenticateToken, async (req, res) => {
     const newPost = new Post({userId, userName, title, content});
     await newPost.save();
 
+    const nftMetadata = {
+      title: title,
+      content: content,
+      author: userName,
+      postId: newPost._id.toString()
+    };
+    const metadataFilePath = path.join(__dirname, 'uri', `${newPost._id}.json`);
+    await fs.writeFile(metadataFilePath, JSON.stringify(nftMetadata, null, 2));
+
     res.status(201).json(newPost);
-  }catch(error){
+  } catch(error) {
     res.status(500).json({ error: error.message });
   }
 });

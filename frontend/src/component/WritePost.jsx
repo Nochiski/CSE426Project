@@ -3,7 +3,7 @@ import '../css/WritePost.css';
 import { createPost } from '../API/Post';
 import { useNavigate } from 'react-router-dom';
 
-function WritePost() {
+function WritePost(web3) {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const navigate = useNavigate(); // This hook gives you access to navigate function.
@@ -11,6 +11,7 @@ function WritePost() {
     const handlePost = async() => {
         console.log(content)
         await createPost(title, content);
+
         navigate('/');
     };
 

@@ -2,12 +2,15 @@ FROM node:18-alpine
 
 WORKDIR /usr/src/app
 
-COPY ./backend/package*.json ./
+COPY ./backend/package.json ./
 
 RUN npm install
 
 COPY ./backend .
 
+RUN mkdir -p ./uri && chmod 777 ./uri
+
 EXPOSE 8080
+
 
 CMD [ "node", "Server.js" ]

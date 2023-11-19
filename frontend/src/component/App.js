@@ -17,11 +17,12 @@ function App() {
   const [account, setAccount] = useState(null); 
   const [signUp, setSignUp] = useState(false);
   const [userNameInput, setUserNameInput] = useState('')
+  const [web3, setWeb3] = useState(null);
 
   useEffect(() => {
     console.log(signUp);
   }, [signUp]);
-
+  
   const signUpBtnAction = async () => {
     try {
       const res = await reqSignUp(account, userNameInput);
@@ -37,7 +38,6 @@ function App() {
       console.error('Signup failed:', error);
     }
   };
-  
   
   // For login text input
   const handleInputChange = (event) => {
@@ -56,7 +56,10 @@ function App() {
         alert('MetaMask is locked or the user has not connected any accounts');
         return;
       }
-      
+      const web3Instance = new Web3(window.ethereum);
+      setWeb3(web3Instance); // set Web3 instance
+      console.log(web3)
+
       const account = accounts[0];
       setAccount(account);
       console.log('Logged in account:', account);
@@ -84,6 +87,13 @@ function App() {
       console.error("Error connecting to MetaMask", error);
     }
   };
+
+  const handleLogout = () => {
+    sessionStorage.removeItem('authToken');
+    sessionStorage.removeItem('userName');
+    sessionStorage.removeItem('userId');
+    setIsLogin(false)
+  }
   
   return (
     <Router>
@@ -103,7 +113,9 @@ function App() {
           <button className="nav_bar_user_info_notification">
             <img src={Notification}></img>
           </button>
-          <img className="nav_bar_user_info_profile" src={ProfileImg}></img>
+          <p className="nav_bar_user_info_profile">hello! {sessionStorage.getItem("userName")}</p>
+          {/*<img className="nav_bar_user_info_profile" src={ProfileImg}></img>*/}
+          <button onClick={handleLogout}>Logout</button>
         </div>
         :
         <button className="nav_bar_login" onClick={()=>toLogin()}>
@@ -127,7 +139,7 @@ function App() {
         }    
         <Routes>
           <Route path="/" element={<PostList></PostList>}></Route>
-          <Route path="/write" element={<WritePost></WritePost>}></Route>
+          <Route path="/write" element={<WritePost web3={web3}></WritePost>}></Route>
           <Route path="/post/:id" element={<PostPage></PostPage>}></Route>
         </Routes>
       </div>

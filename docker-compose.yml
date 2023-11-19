@@ -20,6 +20,9 @@ services:
       - "8080:8080"
     environment:
       WAIT_HOSTS: mongo:27017
+    volumes:
+      - ./backend/uri:/usr/src/app/uri 
+
 
 #  frontend:
 #    build:
