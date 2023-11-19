@@ -11,7 +11,7 @@ backend/uri
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
 build/contracts
-contract/build
+project-contract/build
 
 # Dependency directories
 node_modules/

@@ -14,9 +14,7 @@ contract BlogCraftNFT is ERC721URIStorage {
 
     function createPostNFT(address author, string memory tokenURI) external returns (uint256) {
         _tokenIds.increment();
-
         uint256 newItemId = _tokenIds.current();
-
         _mint(author, newItemId);
         _setTokenURI(newItemId, tokenURI);
         emit postnftcreated(author, newItemId, tokenURI);

@@ -22,7 +22,7 @@ function App() {
 
   useEffect(() => {
     async function fetchBalance() {
-      if (web3) {
+      if (isLogin && web3) {
         const userId = sessionStorage.getItem("userId");
         const result = await web3.methods.getWTT(userId).call();
         let divisor = 1000000000000000000n;

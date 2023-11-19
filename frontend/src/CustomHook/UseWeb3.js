@@ -6,7 +6,7 @@ export function useWeb3() {
 
   useEffect(() => {
     const web3 = new Web3('http://127.0.0.1:7545');
-    const myContractInstance = new web3.eth.Contract(myContractABI, '0x5C7D1E4cEa5249152D00386BE394C6C94Fd31f10');
+    const myContractInstance = new web3.eth.Contract(myContractABI, '0x94393030D6E492867c860c957c8646c7b0eeD979');
     setContract(myContractInstance);
   }, []);
 
@@ -188,11 +188,6 @@ const myContractABI = [
   },
   {
     "inputs": [
-      {
-        "internalType": "address",
-        "name": "author",
-        "type": "address"
-      },
       {
         "internalType": "string",
         "name": "tokenURI",

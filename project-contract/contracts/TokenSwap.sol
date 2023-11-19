@@ -11,6 +11,31 @@ contract TokenSwap {
     event OfferAccepted(uint256 indexed tokenId, address indexed buyer);
     event OfferRejected(uint256 indexed tokenId, address indexed buyer);
 
+    modifier noExistingOffer(uint256 postId) {
+        require(!postOffers[postId].exists, "An offer already exists for this post");
+        _;
+    }
+
+    modifier validTokenTransfer(uint256 offerAmount) {
+        require(writeToken.transferFrom(msg.sender, address(this), offerAmount), "Token transfer failed");
+        _;
+    }
+
+    modifier validMessageLength(string memory message) {
+    require(bytes(message).length <= 200, "String exceeds 200 characters");
+        _;
+    }
+
+    modifier offerExists(uint256 postId) {
+    require(postOffers[postId].exists, "No offer to accept/reject");
+    _;
+    }
+
+    modifier onlyPostOwner(uint256 postId) {
+    require(blogNFT.ownerOf(postId) == msg.sender, "Only the owner can accept/reject the offer");
+    _;
+    }
+
     struct Offer {
         address buyer;
         uint256 amount;
@@ -37,18 +62,16 @@ contract TokenSwap {
         writeToken.likePost(viewer);
     }
 
-    function createPostNFT(address author, string memory tokenURI) external returns (uint256) {
-        return blogNFT.createPostNFT(author, tokenURI);
+    function createPostNFT(string memory tokenURI) external returns (uint256) {
+        return blogNFT.createPostNFT(msg.sender, tokenURI);
     }
     
-    function makeOffer(uint256 postId, uint256 offerAmount, string memory message) external {
-        require(!postOffers[postId].exists, "An offer already exists for this post");
-
-        // Transfer the offer amount from the buyer to this contract as escrow
-        require(writeToken.transferFrom(msg.sender, address(this), offerAmount), "Token transfer failed");
-        
-        require(bytes(message).length <= 200, "String exceeds 200 characters");
-
+    function makeOffer(uint256 postId, uint256 offerAmount, string memory message) 
+        external
+        noExistingOffer(postId)
+        validTokenTransfer(offerAmount)
+        validMessageLength(message)
+    {
         // Record the offer
         postOffers[postId] = Offer({
             buyer: msg.sender,
@@ -64,10 +87,12 @@ contract TokenSwap {
         emit OfferMade(postId, msg.sender, postOwner, offerAmount, message);
     }
 
-    function acceptOffer(uint256 postId) external {
+    function acceptOffer(uint256 postId) 
+        external
+        offerExists(postId)
+        onlyPostOwner(postId)
+    {
         Offer memory offer = postOffers[postId];
-        require(offer.exists, "No offer to accept");
-        require(blogNFT.ownerOf(postId) == msg.sender, "Only the owner can accept the offer");
 
         // Transfer the offer amount to the post owner
         writeToken.transfer(msg.sender, offer.amount);
@@ -75,18 +100,20 @@ contract TokenSwap {
         // Transfer the NFT to the buyer
         blogNFT.transferFrom(msg.sender, offer.buyer, postId);
 
-        // Emit the OfferRejected event
+        // Emit the OfferAccepted event
         emit OfferAccepted(postId, offer.buyer);
 
         // Remove the offer
         delete postOffers[postId];
     }
 
-    function rejectOffer(uint256 postId) external {
-        require(blogNFT.ownerOf(postId) == msg.sender, "Only the owner can reject the offer");
 
+    function rejectOffer(uint256 postId) 
+        external
+        onlyPostOwner(postId)
+        offerExists(postId)
+    {
         Offer memory offer = postOffers[postId];
-        require(offer.exists, "No offer to reject");
 
         // Refund the buyer
         writeToken.transfer(offer.buyer, offer.amount);
@@ -97,5 +124,6 @@ contract TokenSwap {
         // Remove the offer
         delete postOffers[postId];
     }
+
 
 }

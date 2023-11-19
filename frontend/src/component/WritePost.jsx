@@ -3,27 +3,46 @@ import '../css/WritePost.css';
 import { createPost } from '../API/Post';
 import { useNavigate } from 'react-router-dom';
 import { useWeb3 } from '../CustomHook/UseWeb3';
+import { CallERC721 } from '../CustomHook/CallERC721';
 
 function WritePost() {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const navigate = useNavigate(); 
     const web3 = useWeb3()
+    //const erc = CallERC721();
 
     const handlePost = async() => {
         const response = await createPost(title, content);
-        async function createPostNFT() {
-            if (web3){
+        async function postNFT() {
+            if (web3 && response.status === 201){
                 try{
                     const userID = sessionStorage.getItem("userId");
-                    await web3.methods.rewardPublisher(userID).send({from: userID})
-                    await web3.methods.createPostNFT(userID, `http://localhost:8080/uri/${response.data._id}`).send({from: userID});
-                }catch(error){
+                    await web3.methods.rewardPublisher(userID).send({from: userID});
+                    const metaDataURI = `localhost:8080/uri/${response.data._id}`;
+                    console.log(metaDataURI);
+                    web3.methods.createPostNFT(userID, metaDataURI).estimateGas({from: userID})
+                    .then(gasAmount => {
+                        console.log("Estimated gas: ", gasAmount);
+                        web3.methods.createPostNFT(userID, metaDataURI).send({ from: userID, gasLimit: gasAmount})
+                        .then(result => {
+                            console.log(result);
+                        })
+                        .catch(error => {
+                            console.error("error in createPostNFT", error);
+                        });
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+
+
+                }catch(error){                                              //http://localhost:8080/uri/6559a708d00fa50fc2879535
                     console.log("error in handlePost of WirtePost.jsx", error);
                 }
             }
         }
-        await createPostNFT()
+        await postNFT()
         navigate('/');
     };
 
