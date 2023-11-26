@@ -7,37 +7,40 @@ import { useParams } from 'react-router-dom';
 import LikefillBtn from "../images/hand.thumbsup.fill.png"
 import LikeBtn from "../images/hand.thumbsup.png"
 import AskBid from './AskBid';
-import { useWeb3 } from '../CustomHook/UseWeb3';
+import { UseWeb3 } from '../CustomHook/UseWeb3';
 
 function PostPage() {
     const [post, setPost] = useState(new Post());
     const { id } = useParams();
     const [liked, setLiked] = useState(false);
     const [isBidding, setIsBidding] = useState(false);
-    const web3 = useWeb3();
+    const web3 = UseWeb3();
     const [isMyPost, setIsMyPost] = useState(false);
-    const [isMounted, setIsMounted] = useState(true);
 
-    const handleBid = () => {
+    const handleBid = async () => {
         setIsBidding(true)
+        const uri = `${post.id}`
+        const tokenId = await web3.methods.getTokenIdFromURI(uri).call(); // Why it doesn't work?
+        console.log(uri)
+        console.log(typeof(uri))
+        console.log(tokenId)
+
     };
 
     const closeBid = async (bidMessage, bidAmount) => {
         const userId = sessionStorage.getItem("userId")
+        /*
         try{
-            console.log(`localhost:8080/uri/${post.id}`);
-            const tokenId = await web3.methods.getTokenIdFromURI(`localhost:8080/uri/${post.id}`).call(); // Why it doesn't work?
-            console.log(tokenId)
             if(tokenId){
-                console.log("tokenid", tokenId)
+                console.log("tokenid", tokenId.out)
                 await web3.methods.makeOffer(tokenId, bidAmount, bidMessage).send(userId);
             }else{
                 console.log("erorr: fail to make an offer")
             }
-    
+       
         }catch(error){
             console.log("fail to get tokenID:", error)
-        }
+        } */
         setIsBidding(false)
     }
 

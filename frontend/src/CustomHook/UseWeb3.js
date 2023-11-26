@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import Web3 from 'web3';
 
-const ERC1155Address = "0xF5712eB979939Ee5A55e9994E7681e4C0cad10bb"
-const ERC20Address = "0x4Bd407C9da7B7075Ac525ea19c7A2c6D5322F26E"
-const ERC721Address = "0x4759BB65FC27539A4c162c2941bdf3C809e00E00"
+const ERC20Address = "0xf720a9DaD708A561F744F01E7cba2cfD0E9B75b6"
+const ERC721Address = "0xCdc74D07E5abEA64A96f30AFeC1e64c647611031"
+const ERC1155Address = "0xe5F6d85A499A06E02Cc8479d4C71d5523DAB804e"
 
-export function useWeb3() {
+export function UseWeb3() {
   const [contract, setContract] = useState(null);
 
   useEffect(() => {

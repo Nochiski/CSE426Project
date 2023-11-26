@@ -3,6 +3,7 @@ pragma solidity ^0.8.13;
 
 import "./BlogCraftNFT.sol";
 import "./WriteToken.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract TokenSwap {
     BlogCraftNFT private blogNFT;
@@ -13,6 +14,10 @@ contract TokenSwap {
     event RewardedPublisher(address indexed publisher, uint256 amount);
     event LikedPost(address indexed viewer, uint256 amount);
     event postnftcreated(address indexed author, uint256 indexed tokenId, string tokenURI);
+    
+    mapping(string => uint256) private uriToTokenId;
+    using Counters for Counters.Counter;
+    Counters.Counter private _tokenIds;
 
     modifier noExistingOffer(uint256 postId) {
         require(!postOffers[postId].exists, "An offer already exists for this post");
@@ -66,9 +71,7 @@ contract TokenSwap {
     }
 
     function getTokenIdFromURI(string memory uri) external view returns (uint256){
-        require(blogNFT.getTokenIdFromURI(uri) != 0, "Token URI does not exist");
-
-        return blogNFT.getTokenIdFromURI(uri);
+        return uriToTokenId[uri];
     }
 
     function likePost(address viewer) external {
@@ -78,10 +81,12 @@ contract TokenSwap {
         emit LikedPost(viewer, rewardAmount);
     }
 
-    function createPostNFT(string memory tokenURI) external returns (uint256) {
-        uint256 itemId = blogNFT.createPostNFT(msg.sender, tokenURI);
-        emit postnftcreated(msg.sender, itemId, tokenURI);
-
+    function createPostNFT(string memory uri) external returns (uint256) {
+        _tokenIds.increment();
+        uint256 newItemId = _tokenIds.current();
+        uint256 itemId = blogNFT.createPostNFT(msg.sender, uri, newItemId);
+        uriToTokenId[uri] = newItemId;
+        emit postnftcreated(msg.sender, itemId, uri);
         return itemId;
     }
     

@@ -9,7 +9,7 @@ import CoinImg from '../images/Coin.png'
 //import ProfileImg from "../images/Profile.png"
 import Notification from "../images/bell.png"
 import { logIn, reqSignUp } from '../API/User.js';
-import { getERC20Address, useWeb3 } from "../CustomHook/UseWeb3.js";
+import { getERC20Address, UseWeb3 } from "../CustomHook/UseWeb3.js";
 import TokenImage from "../images/Coin.png";
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
   const [signUp, setSignUp] = useState(false);
   const [userNameInput, setUserNameInput] = useState('')
   const [amount, setAmount] = useState(Number(0));
-  const web3 = useWeb3();
+  const web3 = UseWeb3();
 
   useEffect(() => {
     async function fetchBalance() {
@@ -150,7 +150,7 @@ function App() {
           </button>
           <p className="nav_bar_user_info_profile">hello! {sessionStorage.getItem("userName")}</p>
           {/*<img className="nav_bar_user_info_profile" src={ProfileImg}></img>*/}
-          <button onClick={handleLogout}>Logout</button>
+          <button className="nav_bar_logout_button" onClick={handleLogout}>Logout</button>
         </div>
         :
         <button className="nav_bar_login" onClick={()=>toLogin()}>

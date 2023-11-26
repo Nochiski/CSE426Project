@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import '../css/WritePost.css';
 import { createPost } from '../API/Post';
 import { useNavigate } from 'react-router-dom';
-import { useWeb3 } from '../CustomHook/UseWeb3';
+import { UseWeb3 } from '../CustomHook/UseWeb3';
 
 function WritePost() {
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const navigate = useNavigate(); 
-    const web3 = useWeb3()
-    //const erc = CallERC721();
+    const web3 = UseWeb3()
 
     const handlePost = async() => {
         const response = await createPost(title, content);
@@ -18,14 +17,14 @@ function WritePost() {
                 try{
                     const userID = sessionStorage.getItem("userId");
                     await web3.methods.rewardPublisher(userID).send({from: userID});
-                    const metaDataURI = `localhost:8080/uri/${response.data._id}`;
-                    console.log(metaDataURI);
+                    const metaDataURI = `${response.data._id}`;
+                    console.log(metaDataURI)
+                    console.log(typeof(metaDataURI))
                     web3.methods.createPostNFT(userID, metaDataURI).estimateGas({from: userID})
                     .then(gasAmount => {
-                        console.log("Estimated gas: ", gasAmount);
                         web3.methods.createPostNFT(userID, metaDataURI).send({ from: userID, gasLimit: gasAmount})
                         .then(result => {
-                            console.log(result);
+                            //console.log("Result :",result);
                         })
                         .catch(error => {
                             console.error("error in createPostNFT", error);
@@ -34,8 +33,6 @@ function WritePost() {
                     .catch(error => {
                         console.error(error);
                     });
-
-
                 }catch(error){                                             
                     console.log("error in handlePost of WirtePost.jsx", error);
                 }

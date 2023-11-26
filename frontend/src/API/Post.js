@@ -18,7 +18,6 @@ const setPost = (item) => {
 const getPost = async () => {
     const response = await axios.get(API_BASE_URL+'/post');
     if (response.status === 200){
-        console.log(response.data)
         const postInfos = response.data.map(item =>
             setPost(item)
         );

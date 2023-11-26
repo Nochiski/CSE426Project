@@ -2,9 +2,10 @@ import { useState } from "react"
 import "../css/AskBid.css"
 
 function AskBid({closeBid}) {
-    const [bidMessage, setBidMessage] = useState("")
-    const [bidAmount, setBidAmount] = useState()
-
+    const [bidMessage, setBidMessage] = useState("");
+    const [bidAmount, setBidAmount] = useState();
+    const [nftID, setNftID] = useState("pending...");
+ 
     const handleChange = (e) => {
         if(e.target.value.length <= 200){
             setBidMessage(e.target.value)
@@ -31,8 +32,9 @@ function AskBid({closeBid}) {
     return (
         <div className="ask_bid">
             <div className="ask_bid_pop_up"> 
-                <b className="ask_bid_pop_up_title">Bid</b>
+                <b className="ask_bid_pop_up_title">Make an Offer</b>
                 <div className="ask_bid_message">
+                    <p>NFT ID : {nftID}</p>
                     <textarea className="ask_bid_msg_textarea"
                         type='text' 
                         onChange={(e) => {handleChange(e)}} 
