@@ -30,6 +30,12 @@
     justify-content: space-between;
     width: 100%;
 }
+.post_page_title_div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+}
 
 .post_page_title {
     color: #000;
@@ -61,6 +67,22 @@
     outline: none;
 
     padding-left: 10px;
+}
+
+.post_page_nft_mark{
+    color: #FFF;
+
+    font-family: Noto Sans;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    border-radius: 15px;
+    background: #009406;
+
+    padding: 10px;
+    margin: 0;
+    height: 50%;
 }
 
 .post_page_input_container_lower{

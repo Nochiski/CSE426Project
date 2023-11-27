@@ -97,17 +97,14 @@ function App() {
 
       const account = accounts[0];
       setAccount(account);
-      console.log('Logged in account:', account);
   
       const fetchUserData = async () => {
         try {
           const response = await logIn(account); 
           if (response.status == 404) {
             setSignUp(true)
-            console.log(signUp)
           }else {
             setIsLogin(true)
-            console.log('User found, logged in');
             const authToken = response.headers['x-auth-token'];
             sessionStorage.setItem('authToken', authToken);
             sessionStorage.setItem('userName', response.data.userName);

@@ -20,7 +20,11 @@ const postSchema = new mongoose.Schema({
   likedUsers: [{
     type: String,
     ref: 'User' 
-  }]
+  }],
+  NFTID: {
+    type: Number,
+    default: 0
+  }
 }, {
   timestamps: true 
 });

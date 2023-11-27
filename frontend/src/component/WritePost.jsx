@@ -17,22 +17,6 @@ function WritePost() {
                 try{
                     const userID = sessionStorage.getItem("userId");
                     await web3.methods.rewardPublisher(userID).send({from: userID});
-                    const metaDataURI = `${response.data._id}`;
-                    console.log(metaDataURI)
-                    console.log(typeof(metaDataURI))
-                    web3.methods.createPostNFT(userID, metaDataURI).estimateGas({from: userID})
-                    .then(gasAmount => {
-                        web3.methods.createPostNFT(userID, metaDataURI).send({ from: userID, gasLimit: gasAmount})
-                        .then(result => {
-                            //console.log("Result :",result);
-                        })
-                        .catch(error => {
-                            console.error("error in createPostNFT", error);
-                        });
-                    })
-                    .catch(error => {
-                        console.error(error);
-                    });
                 }catch(error){                                             
                     console.log("error in handlePost of WirtePost.jsx", error);
                 }

@@ -10,7 +10,8 @@ const setPost = (item) => {
         item.userId, 
         item.createdAt, 
         item.content,
-        item.likedUsers 
+        item.likedUsers, 
+        item.NFTID
     )
     return post;
 }
@@ -76,4 +77,25 @@ const likePost = async (postId, userId) => {
     }
 }
 
-export {likePost, getPost, createPost, getPostById};
+const addNFT = async (postId, nftID) => {
+    try{
+        const data = {
+            postId : postId,
+            nftID : nftID
+          };
+          const config = {
+            headers: {
+              'Content-Type': 'application/json',
+              'authorization' : 'Bearer '+sessionStorage.getItem("authToken")
+            }
+          };
+
+        const response = await axios.post(API_BASE_URL+`/posts/${postId}/nft`, data, config);
+        return response
+    }catch(err){
+        console.log(err)
+    }
+}
+
+
+export {likePost, getPost, createPost, getPostById, addNFT};

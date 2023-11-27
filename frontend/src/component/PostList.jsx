@@ -4,7 +4,6 @@ import '../images/nav_bar_logo.png';
 import WritingImg from '../images/square.and.pencil.png';
 import WritingImgHovered from '../images/square.and.pencil.hover.png';
 import PostListItem from './PostListItem.jsx';
-import PostInfo from "../model/PostInfo.js";
 import { useNavigate } from 'react-router-dom';
 import React, {useEffect, useState} from 'react';
 import {getPost} from '../API/Post.js'

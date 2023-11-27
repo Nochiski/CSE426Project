@@ -142,6 +142,24 @@ app.post('/posts/:postId/like', authenticateToken, async (req, res) => {
   }
 });
 
+app.post('/posts/:postId/nft', authenticateToken, async (req, res) => {
+  try {
+    const postId = req.params.postId;
+    const nftId = req.body.nftID;
+
+    const post = await Post.findById(postId);
+
+    post.NFTID = nftId
+
+    await post.save();
+    
+    res.status(200).send(post); 
+  } catch (error) {
+    res.status(500).send(error.toString());
+  }
+});
+
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

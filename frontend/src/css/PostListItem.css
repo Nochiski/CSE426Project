@@ -16,6 +16,23 @@
     align-items: center;
 }
 
+.post_list_nft_mark{
+    color: #FFF;
+
+    font-family: Noto Sans;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    border-radius: 15px;
+    background: #009406;
+
+    padding: 8px 10px;
+    margin: 0;
+
+    margin-left: 30px;
+}
+
 .post_list_item_title{
     color: #000;
 

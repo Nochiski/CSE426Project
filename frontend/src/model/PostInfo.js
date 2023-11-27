@@ -1,5 +1,5 @@
 class PostInfo {
-    constructor(id, title, author, authorId, date, content, likedUsers) {
+    constructor(id, title, author, authorId, date, content, likedUsers, tokenId) {
         this.id = id;
         this.title = title;
         this.author = author;
@@ -7,6 +7,7 @@ class PostInfo {
         this.date = date;
         this.content = content;
         this.likedUsers = likedUsers;
+        this.tokenId = tokenId;
         if(!likedUsers){
             this.numberOfLikes = 0
         }else{
