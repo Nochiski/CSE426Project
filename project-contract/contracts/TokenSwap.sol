@@ -4,10 +4,15 @@ pragma solidity ^0.8.13;
 import "./BlogCraftNFT.sol";
 import "./WriteToken.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 
-contract TokenSwap {
+contract TokenSwap is ERC1155{
     BlogCraftNFT private blogNFT;
     WriteToken private writeToken;
+
+    uint256 public constant BLOGCRAFTNFT = 0;
+    uint256 public constant WRITETOKEN = 1;
+
     event OfferMade(uint256 indexed postId, address indexed buyer, address indexed seller,uint256 amount, string message); // Event when new offer is created
     event OfferAccepted(uint256 indexed tokenId, address indexed buyer);
     event OfferRejected(uint256 indexed tokenId, address indexed buyer);
@@ -15,7 +20,7 @@ contract TokenSwap {
     event LikedPost(address indexed viewer, uint256 amount);
     event postnftcreated(address indexed author, uint256 indexed tokenId, string tokenURI);
     
-    mapping(string => uint256) private uriToTokenId;
+    mapping(string => uint256) private uriToTokenId; 
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
 
@@ -53,7 +58,7 @@ contract TokenSwap {
 
     mapping(uint256 => Offer) public postOffers; // NFT post ID to its current offer
 
-    constructor(address _blogNFT, address _writeToken) {
+    constructor(address _blogNFT, address _writeToken) ERC1155("localhost:8080/uri/{id}") {
         blogNFT = BlogCraftNFT(_blogNFT);
         writeToken = WriteToken(_writeToken);
     }

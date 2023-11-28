@@ -39,7 +39,7 @@ function PostPage() {
             const response = await addNFT(post.id, tokenId);
             if (response.status !== 500) {
                 setIsNFTCreated(true);
-                setPost(response.data)
+                setPost(response.data);
             }
         } catch (error) {
             console.error("error in createPostNFT", error);
@@ -48,18 +48,13 @@ function PostPage() {
     
     const closeBid = async (bidMessage, bidAmount) => {
         const userId = sessionStorage.getItem("userId")
-        
+        const amount = web3.utils.toWei(bidAmount, 'ether');
         try{
             const tokenId = post.tokenId
-            if(tokenId){
-                console.log("tokenid", post.tokenId)
-                await web3.methods.makeOffer(tokenId, bidAmount, bidMessage).send({from: userId});
-            }else{
-                console.log("erorr: fail to make an offer")
-            }
-       
+            console.log("tokenid", post.tokenId)
+            await web3.methods.makeOffer(tokenId, amount, bidMessage).send({from: userId});
         }catch(error){
-            console.log("fail to get tokenID:", error)
+            console.log("closeBid:", error)
         } 
         setIsBidding(false)
     };
