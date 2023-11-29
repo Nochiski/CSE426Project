@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import '../css/PostPage.css';
 import thumbsUpImage from '../images/thumbsUp.png'; 
 import { getPostById, likePost, addNFT } from '../API/Post';
@@ -7,7 +7,8 @@ import { useParams } from 'react-router-dom';
 import LikefillBtn from "../images/hand.thumbsup.fill.png"
 import LikeBtn from "../images/hand.thumbsup.png"
 import AskBid from './AskBid';
-import { UseWeb3 } from '../CustomHook/UseWeb3';
+import { UseWeb3, getAddress, getERC20ABI, getERC20Address } from '../CustomHook/UseWeb3';
+import Web3 from 'web3';
 
 function PostPage() {
     const [post, setPost] = useState(new Post());
@@ -48,62 +49,47 @@ function PostPage() {
     
     const closeBid = async (bidMessage, bidAmount) => {
         const userId = sessionStorage.getItem("userId")
-        const amount = web3.utils.toWei(bidAmount, 'ether');
+        const web3Instacne = new Web3('http://127.0.0.1:7545');
+        const amount = web3Instacne.utils.toWei(bidAmount, 'ether');
+        const tokenABI = getERC20ABI();
+        const tokenAddress = getERC20Address()
+        const contractAddress = getAddress();
+
+        const tokenContract = new web3Instacne.eth.Contract(tokenABI, tokenAddress);
+
         try{
+            await tokenContract.methods.approve(contractAddress, amount).send({ from: userId });
             const tokenId = post.tokenId
             console.log("tokenid", post.tokenId)
-            await web3.methods.makeOffer(tokenId, amount, bidMessage).send({from: userId});
+            await web3.methods.makeOffer(tokenId, amount, bidMessage).send({from: userId, gas: 500000});
         }catch(error){
             console.log("closeBid:", error)
         } 
         setIsBidding(false)
     };
 
-    useEffect(() => {
-        async function fetchPosts() {
-            try {
-                const postInfos = await getPostById(id);
-                setPost(postInfos);
-                console.log(postInfos)
-                if(postInfos.tokenId !== 0) {
-                    setIsNFTCreated(true);
-                } 
-                if(sessionStorage.getItem("userId") === postInfos.authorId ){
-                    setIsMyPost(true);
-                }
-            } catch (error) {
-                console.error("Error in useEffect from PostList.jsx:", error);
+    const fetchPosts = useCallback(async () => {
+        try {
+            const postInfos = await getPostById(id);
+            await setPost(postInfos);
+            if(postInfos.likedUsers&&postInfos.likedUsers.includes(sessionStorage.getItem('userId'))){
+                setLiked(true);
+            }            if(postInfos.tokenId !== 0) {
+                setIsNFTCreated(true);
+            } 
+            if(sessionStorage.getItem("userId") === postInfos.authorId ){
+                setIsMyPost(true);
             }
+        } catch (error) {
+            console.error("Error in useEffect from PostList.jsx:", error);
         }
+
+ 
+    }, [id]);
+
+    useEffect(() => {
         fetchPosts();
-        /*
-        const web3Instance = new Web3('ws://127.0.0.1:7545');
-        const contractABI = getABI();
-        const contractAddress = getAddress();
-    
-        if (web3Instance && contractABI && contractAddress) {
-            const myContract = new web3Instance.eth.Contract(contractABI, contractAddress);
-    
-            try {
-                if (myContract && myContract.events) {
-                    const eventSubscription = myContract.events.LikedPost({
-                        filter: { viewer: sessionStorage.getItem("userId") },
-                        fromBlock: 0
-                    })
-                    .on('data', function(event) {
-                        console.log('New LikedPost Event:', event);
-                    })
-                    .on('error', console.error);
-            
-                    return () => {
-                        eventSubscription.unsubscribe();
-                    };
-                }
-            } catch (error) {
-                console.error("Error :", error);
-            }        
-        }*/
-        }, []);
+    }, []);
     
     const handleLike = async() => {
         if(!sessionStorage.getItem("userId")){
@@ -129,7 +115,7 @@ function PostPage() {
     return (
         <div className='post_page'>
                     {isBidding && 
-            <AskBid closeBid={closeBid}></AskBid>
+            <AskBid post={post} closeBid={closeBid}></AskBid>
         }
             <div className='post_page_info_area'>
                 <div className='post_page_input_container_upper'>

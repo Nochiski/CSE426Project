@@ -1,10 +1,14 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import "../css/AskBid.css"
 
-function AskBid({closeBid}) {
+function AskBid({post, closeBid}) {
     const [bidMessage, setBidMessage] = useState("");
     const [bidAmount, setBidAmount] = useState();
     const [nftID, setNftID] = useState("pending...");
+
+    useEffect(()=>{
+        setNftID(post.tokenId)
+    })
  
     const handleChange = (e) => {
         if(e.target.value.length <= 200){

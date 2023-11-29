@@ -9,8 +9,10 @@ import CoinImg from '../images/Coin.png'
 //import ProfileImg from "../images/Profile.png"
 import Notification from "../images/bell.png"
 import { logIn, reqSignUp } from '../API/User.js';
-import { getERC20Address, UseWeb3 } from "../CustomHook/UseWeb3.js";
+import { getABI, getAddress, getERC20Address, UseWeb3 } from "../CustomHook/UseWeb3.js";
 import TokenImage from "../images/Coin.png";
+import NotificationsCenter from "./NotificationsCenter.jsx";
+import Web3 from "web3";
 
 function App() {
   const [isLogin, setIsLogin] = useState(sessionStorage.getItem('authToken') ? true : false);
@@ -19,9 +21,10 @@ function App() {
   const [signUp, setSignUp] = useState(false);
   const [userNameInput, setUserNameInput] = useState('')
   const [amount, setAmount] = useState(Number(0));
+  const [isNotificationsCenterOn, setIsNotificationsCenterOn] = useState(false);
   const web3 = UseWeb3();
 
-  useEffect(() => {
+  useEffect(() => { // 스마트컨트랙트 상시 구독
     async function fetchBalance() {
       if (isLogin && web3) {
         const userId = sessionStorage.getItem("userId");
@@ -31,6 +34,33 @@ function App() {
       }
     }
     fetchBalance();
+
+    const web3Instance = new Web3('ws://127.0.0.1:7545');
+    const contractABI = getABI();
+    const contractAddress = getAddress();
+
+    if (web3Instance && contractABI && contractAddress) {
+        const myContract = new web3Instance.eth.Contract(contractABI, contractAddress);
+
+        try {
+            if (myContract && myContract.events) {
+                const eventSubscription = myContract.events.OfferMade({
+                    filter: { seller: sessionStorage.getItem("userId") },
+                    fromBlock: 0
+                })
+                .on('data', function(event) {
+                    console.log('OfferMade Event:', event);
+                })
+                .on('error', console.error);
+                return () => {
+                    eventSubscription.unsubscribe();
+                };
+            }
+        } catch (error) {
+            console.error("Error :", error);
+        }        
+    }
+
   }, [web3, amount]);
   
   const signUpBtnAction = async () => {
@@ -127,6 +157,10 @@ function App() {
     setIsLogin(false)
   }
   
+  const handleNoti = () => {
+    setIsNotificationsCenterOn(!isNotificationsCenterOn)
+  }
+  
   return (
     <Router>
       <div className="nav_bar">
@@ -142,8 +176,13 @@ function App() {
         <div className="nav_bar_user_info">
           <img src={CoinImg}/>
           <p className="nav_bar_user_info_amount">{amount}</p>
-          <button className="nav_bar_user_info_notification">
+          <button className="nav_bar_user_info_notification" onClick={handleNoti}>
             <img src={Notification}></img>
+            {isNotificationsCenterOn &&
+              <NotificationsCenter> 
+
+              </NotificationsCenter>
+            }
           </button>
           <p className="nav_bar_user_info_profile">hello! {sessionStorage.getItem("userName")}</p>
           {/*<img className="nav_bar_user_info_profile" src={ProfileImg}></img>*/}

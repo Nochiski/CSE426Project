@@ -83,6 +83,8 @@ app.post('/post', authenticateToken, async (req, res) => {
     await newPost.save();
 
     const nftMetadata = {
+      name: "BlogPostNFT",
+      description: `This certifies that the holder of this NFT is the owner of the post titled ${title}`,
       title: title,
       content: content,
       author: userName,

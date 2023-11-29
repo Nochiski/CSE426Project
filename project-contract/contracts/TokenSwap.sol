@@ -5,14 +5,11 @@ import "./BlogCraftNFT.sol";
 import "./WriteToken.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract TokenSwap is ERC1155{
     BlogCraftNFT private blogNFT;
     WriteToken private writeToken;
-
-    uint256 public constant BLOGCRAFTNFT = 0;
-    uint256 public constant WRITETOKEN = 1;
-
     event OfferMade(uint256 indexed postId, address indexed buyer, address indexed seller,uint256 amount, string message); // Event when new offer is created
     event OfferAccepted(uint256 indexed tokenId, address indexed buyer);
     event OfferRejected(uint256 indexed tokenId, address indexed buyer);
@@ -23,6 +20,8 @@ contract TokenSwap is ERC1155{
     mapping(string => uint256) private uriToTokenId; 
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
+    
+    address private owner;
 
     modifier noExistingOffer(uint256 postId) {
         require(!postOffers[postId].exists, "An offer already exists for this post");
@@ -58,9 +57,10 @@ contract TokenSwap is ERC1155{
 
     mapping(uint256 => Offer) public postOffers; // NFT post ID to its current offer
 
-    constructor(address _blogNFT, address _writeToken) ERC1155("localhost:8080/uri/{id}") {
+    constructor(address _blogNFT, address _writeToken) ERC1155(""){
         blogNFT = BlogCraftNFT(_blogNFT);
         writeToken = WriteToken(_writeToken);
+        owner = msg.sender;
     }
 
     function getWTT(address publisher) external view returns (uint256) {
