@@ -13,6 +13,7 @@ import { getABI, getAddress, getERC20Address, UseWeb3 } from "../CustomHook/UseW
 import TokenImage from "../images/Coin.png";
 import NotificationsCenter from "./NotificationsCenter.jsx";
 import Web3 from "web3";
+import ResponseBid from "./ReponseBid.js";
 
 function App() {
   const [isLogin, setIsLogin] = useState(sessionStorage.getItem('authToken') ? true : false);
@@ -22,9 +23,13 @@ function App() {
   const [userNameInput, setUserNameInput] = useState('')
   const [amount, setAmount] = useState(Number(0));
   const [isNotificationsCenterOn, setIsNotificationsCenterOn] = useState(false);
+  const [notifications, setNotifications] = useState(null);
+  const [openResponseBid, setOpenResponseBid] = useState(false);
+  const [responseEvent, setResponseEvent] = useState(null);
+
   const web3 = UseWeb3();
 
-  useEffect(() => { // 스마트컨트랙트 상시 구독
+  useEffect(() => { 
     async function fetchBalance() {
       if (isLogin && web3) {
         const userId = sessionStorage.getItem("userId");
@@ -34,34 +39,10 @@ function App() {
       }
     }
     fetchBalance();
-
-    const web3Instance = new Web3('ws://127.0.0.1:7545');
-    const contractABI = getABI();
-    const contractAddress = getAddress();
-
-    if (web3Instance && contractABI && contractAddress) {
-        const myContract = new web3Instance.eth.Contract(contractABI, contractAddress);
-
-        try {
-            if (myContract && myContract.events) {
-                const eventSubscription = myContract.events.OfferMade({
-                    filter: { seller: sessionStorage.getItem("userId") },
-                    fromBlock: 0
-                })
-                .on('data', function(event) {
-                    console.log('OfferMade Event:', event);
-                })
-                .on('error', console.error);
-                return () => {
-                    eventSubscription.unsubscribe();
-                };
-            }
-        } catch (error) {
-            console.error("Error :", error);
-        }        
-    }
-
-  }, [web3, amount]);
+  
+  
+  }, [web3]);
+  
   
   const signUpBtnAction = async () => {
     try {
@@ -160,6 +141,21 @@ function App() {
   const handleNoti = () => {
     setIsNotificationsCenterOn(!isNotificationsCenterOn)
   }
+
+  const eventSelected = (item) => {
+    console.log(item)
+    setResponseEvent(item)
+    setOpenResponseBid(true);
+  }
+
+  const acceptOffer = () => {
+    setOpenResponseBid(false);
+
+  }
+
+  const rejectOffer = () => {
+    setOpenResponseBid(false);
+  }
   
   return (
     <Router>
@@ -176,15 +172,18 @@ function App() {
         <div className="nav_bar_user_info">
           <img src={CoinImg}/>
           <p className="nav_bar_user_info_amount">{amount}</p>
+          
           <button className="nav_bar_user_info_notification" onClick={handleNoti}>
             <img src={Notification}></img>
             {isNotificationsCenterOn &&
-              <NotificationsCenter> 
+              <NotificationsCenter eventSelected={eventSelected}> 
 
               </NotificationsCenter>
             }
           </button>
+                    
           <p className="nav_bar_user_info_profile">hello! {sessionStorage.getItem("userName")}</p>
+
           {/*<img className="nav_bar_user_info_profile" src={ProfileImg}></img>*/}
           <button className="nav_bar_logout_button" onClick={handleLogout}>Logout</button>
         </div>
@@ -207,6 +206,10 @@ function App() {
               </div>
             </div>
           </div>
+        }
+        {openResponseBid &&
+          <ResponseBid event={responseEvent} accept={acceptOffer} reject={rejectOffer}></ResponseBid>
+
         }    
         <Routes>
           <Route path="/" element={<PostList></PostList>}></Route>

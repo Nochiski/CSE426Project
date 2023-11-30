@@ -33,6 +33,13 @@
     
 }
 
+.ask_bid_title{
+    align-self: flex-start;
+    padding-left: 50px;
+    margin: 0;
+    font-weight: 700;
+}
+
 .ask_bid_message{
     padding-top: 40px;
     display: flex;
@@ -94,6 +101,36 @@
   
     border-radius: 15px;
     background: #009406;
+    color: #FFF;
+  
+    font-family: Noto Sans;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+  
+    width: 125px;
+    height: 40px;
+
+    margin-right: 20px;
+}
+
+.response_bid_bid_area{
+    padding-top: 50px;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.response_bid_reject{
+    border: none; 
+    padding: 0;
+    margin: 0; 
+    outline: none; 
+    box-shadow: none; 
+  
+    border-radius: 15px;
+    background: #940000;
     color: #FFF;
   
     font-family: Noto Sans;

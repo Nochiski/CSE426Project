@@ -9,7 +9,11 @@ const userSchema = new mongoose.Schema({
   userName: {
     type: String,
     required: true
-  }
+  },
+  checkedBlock: [{
+    type: String
+  }],
+
 }, {
   timestamps: true 
 });

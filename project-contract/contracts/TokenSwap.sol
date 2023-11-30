@@ -116,39 +116,35 @@ contract TokenSwap is ERC1155{
         emit OfferMade(postId, msg.sender, postOwner, offerAmount, message);
     }
 
-    function acceptOffer(uint256 postId) 
+    function acceptOffer(uint256 postId, address buyer, uint256 amount) 
         external
         offerExists(postId)
         onlyPostOwner(postId)
     {
-        Offer memory offer = postOffers[postId];
-
         // Transfer the offer amount to the post owner
-        writeToken.transfer(msg.sender, offer.amount);
+        writeToken.transfer(msg.sender, amount);
 
         // Transfer the NFT to the buyer
-        blogNFT.transferFrom(msg.sender, offer.buyer, postId);
+        blogNFT.transferFrom(msg.sender, buyer, postId);
 
         // Emit the OfferAccepted event
-        emit OfferAccepted(postId, offer.buyer);
+        emit OfferAccepted(postId, buyer);
 
         // Remove the offer
         delete postOffers[postId];
     }
 
 
-    function rejectOffer(uint256 postId) 
+    function rejectOffer(uint256 postId, address buyer, uint256 amount) 
         external
         onlyPostOwner(postId)
         offerExists(postId)
     {
-        Offer memory offer = postOffers[postId];
-
         // Refund the buyer
-        writeToken.transfer(offer.buyer, offer.amount);
+        writeToken.transfer(buyer, amount);
         
         // Emit the OfferRejected event
-        emit OfferRejected(postId, offer.buyer);
+        emit OfferRejected(postId, buyer);
 
         // Remove the offer
         delete postOffers[postId];
