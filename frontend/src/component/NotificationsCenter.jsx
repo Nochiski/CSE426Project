@@ -13,8 +13,9 @@ function NotificationsCenter({eventSelected}) {
     },[events]);
 
     const loadEvent = async () => {
-        
-        const web3Instance = new Web3('ws://127.0.0.1:7545');
+        const INFURA_API_KEY = "https://sepolia.infura.io/v3/db3042ae50dc42c0b7232f7a3f8c3fe2";
+
+        const web3Instance = new Web3(INFURA_API_KEY);
         const contractABI = getABI();
         const contractAddress = getAddress();
   
@@ -34,7 +35,7 @@ function NotificationsCenter({eventSelected}) {
     
                       if (!events.some(e => e.blockHash === event.blockHash)) {
                         setEvents(prevEvents => [...prevEvents, event]);
-                       // processedEvents[event.blockHash] = true;
+                        processedEvents[event.blockHash] = true;
                         sessionStorage.setItem('processedEvents', JSON.stringify(processedEvents));
                       }
                     }

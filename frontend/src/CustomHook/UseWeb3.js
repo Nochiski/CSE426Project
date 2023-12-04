@@ -1,21 +1,48 @@
 import { useState, useEffect } from 'react';
 import Web3 from 'web3';
 
-const ERC20Address = "0x5223D8E4ac980607591fd59DE95C3C1dBFD6C53F"
-const ERC721Address = "0x225ed1808d1ED8779881595D326a67Ad32359A59"
-const ERC1155Address = "0xE76404f4649735819D2f538b98181f61821dD503"
+const ERC20Address = "0xA27362A1038599D10ddfCB7744daeAE85FE1c162"
+const ERC721Address = "0x9fE5b357f650Cd6Fc4C6cAAc856F4FB17E775869"
+const ERC1155Address = "0x719684BeB4d2DE785cF3D5Eb344c5B03Ce5825F4"
 
 export function UseWeb3() {
   const [contract, setContract] = useState(null);
-
   useEffect(() => {
-    const web3 = new Web3('http://127.0.0.1:7545');
+    const URL = "https://sepolia.infura.io/v3/db3042ae50dc42c0b7232f7a3f8c3fe2";
+    console.log("URL", URL)
+    const web3 = new Web3(window.ethereum);
     const myContractInstance = new web3.eth.Contract(myContractABI, ERC1155Address);
     setContract(myContractInstance);
   }, []);
 
   return contract;
 }
+
+export const addNFTToMetaMask = async (tokenId, tokenDescription) => {
+  try {
+      const wasAdded = await window.ethereum.request({
+          method: 'wallet_watchAsset',
+          params: {
+              type: 'ERC721', 
+              options: {
+                  address: ERC721Address, 
+                  tokenId: tokenId, 
+                  name: "PostCraftNFT", 
+                  description: tokenDescription 
+              },
+          },
+      });
+
+      if (wasAdded) {
+          console.log('NFT was added to your wallet!');
+      } else {
+          console.log('NFT was not added to your wallet.');
+      }
+  } catch (error) {
+      console.error(error);
+  }
+};
+
 
 export function getABI() {
   return myContractABI;

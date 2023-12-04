@@ -15,6 +15,7 @@ function WritePost() {
         async function postNFT() {
             if (web3 && response.status === 201){
                 try{
+                    await window.ethereum.request({ method: 'eth_requestAccounts' });    
                     const userID = sessionStorage.getItem("userId");
                     await web3.methods.rewardPublisher(userID).send({from: userID});
                 }catch(error){                                             

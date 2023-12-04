@@ -6,18 +6,15 @@ import PostList from './PostList.jsx'
 import WritePost from './WritePost.jsx'
 import PostPage from './PostPage.jsx'
 import CoinImg from '../images/Coin.png'
-//import ProfileImg from "../images/Profile.png"
 import Notification from "../images/bell.png"
 import { logIn, reqSignUp } from '../API/User.js';
-import { getABI, getAddress, getERC20Address, UseWeb3 } from "../CustomHook/UseWeb3.js";
+import { getERC20Address, UseWeb3 } from "../CustomHook/UseWeb3.js";
 import TokenImage from "../images/Coin.png";
 import NotificationsCenter from "./NotificationsCenter.jsx";
-import Web3 from "web3";
 import ResponseBid from "./ReponseBid.js";
 
 function App() {
   const [isLogin, setIsLogin] = useState(sessionStorage.getItem('authToken') ? true : false);
-  const [handleLogin, setHandleLogin] = useState(false);
   const [account, setAccount] = useState(null); 
   const [signUp, setSignUp] = useState(false);
   const [userNameInput, setUserNameInput] = useState('')
@@ -60,7 +57,6 @@ function App() {
         const tokenImage = TokenImage;
 
         try {
-          // 'wasAdded' is a boolean. Like any RPC method, an error can be thrown.
           const wasAdded = await window.ethereum.request({
             method: 'wallet_watchAsset',
             params: {
@@ -148,15 +144,11 @@ function App() {
     setOpenResponseBid(true);
   }
 
-  const acceptOffer = () => {
+  const closeRequestOffer = () => {
     setOpenResponseBid(false);
 
   }
 
-  const rejectOffer = () => {
-    setOpenResponseBid(false);
-  }
-  
   return (
     <Router>
       <div className="nav_bar">
@@ -208,7 +200,7 @@ function App() {
           </div>
         }
         {openResponseBid &&
-          <ResponseBid event={responseEvent} accept={acceptOffer} reject={rejectOffer}></ResponseBid>
+          <ResponseBid event={responseEvent} closeRequestOffer={closeRequestOffer}></ResponseBid>
 
         }    
         <Routes>

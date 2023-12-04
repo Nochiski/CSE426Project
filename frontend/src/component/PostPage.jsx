@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import LikefillBtn from "../images/hand.thumbsup.fill.png"
 import LikeBtn from "../images/hand.thumbsup.png"
 import AskBid from './AskBid';
-import { UseWeb3, getAddress, getERC20ABI, getERC20Address } from '../CustomHook/UseWeb3';
+import { UseWeb3, addNFTToMetaMask, getAddress, getERC20ABI, getERC20Address } from '../CustomHook/UseWeb3';
 import Web3 from 'web3';
 
 function PostPage() {
@@ -30,7 +30,7 @@ function PostPage() {
         try {
             const userID = sessionStorage.getItem("userId");
             const metaDataURI = `${post._id}`;
-            
+            await window.ethereum.request({ method: 'eth_requestAccounts' }); 
             const gasAmount = await web3.methods.createPostNFT(userID, metaDataURI).estimateGas({ from: userID });
             const result = await web3.methods.createPostNFT(userID, metaDataURI).send({ from: userID, gasLimit: gasAmount });
             
@@ -41,6 +41,7 @@ function PostPage() {
             if (response.status !== 500) {
                 setIsNFTCreated(true);
                 setPost(response.data);
+                addNFTToMetaMask(tokenId.toString(), post.content);
             }
         } catch (error) {
             console.error("error in createPostNFT", error);
@@ -49,16 +50,24 @@ function PostPage() {
     
     const closeBid = async (bidMessage, bidAmount) => {
         const userId = sessionStorage.getItem("userId")
-        const web3Instacne = new Web3('http://127.0.0.1:7545');
+        const INFURA_API_KEY = "https://sepolia.infura.io/v3/db3042ae50dc42c0b7232f7a3f8c3fe2";
+        const web3Instacne = new Web3(INFURA_API_KEY);
         const amount = web3Instacne.utils.toWei(bidAmount, 'ether');
         const tokenABI = getERC20ABI();
         const tokenAddress = getERC20Address()
         const contractAddress = getAddress();
 
         const tokenContract = new web3Instacne.eth.Contract(tokenABI, tokenAddress);
-
+        const data = tokenContract.methods.approve(contractAddress, amount).encodeABI();
+        const transactionParameters = {
+            to: tokenAddress, 
+            from: userId, 
+            data: data
+        };
+        
         try{
-            await tokenContract.methods.approve(contractAddress, amount).send({ from: userId });
+            await window.ethereum.request({ method: 'eth_sendTransaction', params: [transactionParameters] }); 
+            
             const tokenId = post.tokenId
             console.log("tokenid", post.tokenId)
             await web3.methods.makeOffer(tokenId, amount, bidMessage).send({from: userId, gas: 500000});

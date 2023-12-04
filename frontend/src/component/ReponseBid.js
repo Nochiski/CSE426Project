@@ -3,7 +3,8 @@ import "../css/AskBid.css"
 import Web3 from "web3"
 import { UseWeb3, getAddress, getERC20ABI, getERC20Address, getERC721ABI, getERC721Address } from "../CustomHook/UseWeb3"
 
-function ResponseBid({event, accept, reject}) {
+const INFURA_API_KEY = "https://sepolia.infura.io/v3/db3042ae50dc42c0b7232f7a3f8c3fe2";
+function ResponseBid({event, closeRequestOffer}) {
     const web3 = UseWeb3();
     useEffect(()=>{
         console.log("e", event)
@@ -12,26 +13,34 @@ function ResponseBid({event, accept, reject}) {
 
     const acceptOffer = async () => {
         const userId = sessionStorage.getItem("userId")
-        const web3Instacne = new Web3('http://127.0.0.1:7545');
+        const web3Instacne = new Web3(INFURA_API_KEY);
         const tokenABI = getERC721ABI();
         const tokenAddress = getERC721Address()
         const contractAddress = getAddress();
 
         const tokenContract = new web3Instacne.eth.Contract(tokenABI, tokenAddress);
+        const data = tokenContract.methods.approve(contractAddress, event.returnValues.postId).encodeABI();
+
+        const transactionParameters = {
+            to: tokenAddress, 
+            from: userId, 
+            data: data
+        };
 
         try{
-            await tokenContract.methods.approve(contractAddress, event.returnValues.postId).send({ from: userId });
+            await window.ethereum.request({ method: 'eth_sendTransaction', params: [transactionParameters] }); 
             await web3.methods.acceptOffer(event.returnValues.postId, event.returnValues.buyer, event.returnValues.amount).send({from: userId, gas: 500000});
+            
         }catch(error){
             console.log("closeBid:", error)
         } 
-        accept();
+        closeRequestOffer();
         
     }    
     
     const rejectOffer = async () => {
         const userId = sessionStorage.getItem("userId")
-        const web3Instacne = new Web3('http://127.0.0.1:7545');
+        const web3Instacne = new Web3(INFURA_API_KEY);
         const tokenABI = getERC20ABI();
         const tokenAddress = getERC20Address()
         const contractAddress = getAddress();
@@ -44,7 +53,7 @@ function ResponseBid({event, accept, reject}) {
         }catch(error){
             console.log("closeBid:", error)
         } 
-        reject();
+        closeRequestOffer();
     }
     
     return (
